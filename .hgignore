@@ -1,0 +1,5 @@
+app/config/config.local.ini
+composer.lock
+
+syntax: regexp
+^vendor/

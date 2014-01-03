@@ -1,0 +1,13 @@
+{
+    "name" : "teachboost/phoenix",
+    "description" : "Titan Reborn",
+    "license" : "proprietary",
+
+    "require" : {
+        "phalcon/incubator": "dev-master"
+    },
+
+    "require-dev" : {
+        "phpunit/phpunit": "3.7.*"
+    }
+}
