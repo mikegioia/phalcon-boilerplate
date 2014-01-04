@@ -21,6 +21,29 @@ class Util extends \Base\Library
         return self::$messages;
     }
 
+    public static function setFlash( $messages )
+    {
+        $session = self::getService( 'session' );
+        $flash = $session->get( 'flash' );
+
+        if ( ! is_array( $flash ) )
+        {
+            $flash = array();
+        }
+
+        $flash = array_merge( $flash, $messages );
+        $session->set( 'flash', $flash );
+    }
+
+    public static function getFlash()
+    {
+        $session = self::getService( 'session' );
+        $flash = $session->get( 'flash' );
+        $session->remove( 'flash' );
+
+        return $flash;
+    }
+
     public static function clearMessages()
     {
         self::$messages = array();

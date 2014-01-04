@@ -2,17 +2,15 @@
 
 namespace Controllers;
 
-class IndexController extends \Base\Controller
+class DashboardController extends \Base\Controller
 {
     public function beforeExecuteRoute()
     {
-        $this->checkLoggedIn = FALSE;
-
         parent::beforeExecuteRoute();
     }
 
     public function indexAction()
     {
-        $this->view->pick( 'main/index' );
+        $this->view->user = \Lib\Auth::getUser();
     }
 }

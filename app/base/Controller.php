@@ -28,6 +28,11 @@ class Controller extends \Phalcon\Mvc\Controller
      */
     public function beforeExecuteRoute()
     {
+        if ( is_null( $this->responseMode ) )
+        {
+            $this->responseMode = $this->config->app->responseMode;
+        }
+
         if ( $this->checkLoggedIn )
         {
             return $this->checkLoggedIn();
@@ -49,11 +54,6 @@ class Controller extends \Phalcon\Mvc\Controller
             \Lib\Util::getMessages() );
 
         \Lib\Util::stopBenchmark();
-
-        if ( is_null( $this->responseMode ) )
-        {
-            $this->responseMode = $this->config->app->responseMode;
-        }
 
         // if we're in API mode, send a JSON response. otherwise
         // save the messages to the flashdata and optionally redirect
@@ -82,8 +82,16 @@ class Controller extends \Phalcon\Mvc\Controller
         }
         else
         {
-            // set flashdata
-            // redirect if it's set
+            \Lib\Util::setFlash( $this->messages );
+
+            if ( ! is_null( $this->redirect ) )
+            {
+                return $this->response->redirect( $this->redirect );
+            }
+            else
+            {
+                $this->view->flashMessages = \Lib\Util::getFlash();
+            }
         }
     }
 
@@ -91,12 +99,19 @@ class Controller extends \Phalcon\Mvc\Controller
     {
         if ( ! \Lib\Auth::isLoggedIn() )
         {
-            return $this->dispatcher->forward(
-                array(
-                    'namespace' => 'Controllers',
-                    'controller' => 'error',
-                    'action' => 'show401'
-                ));
+            if ( $this->responseMode === 'api' )
+            {
+                return $this->dispatcher->forward(
+                    array(
+                        'namespace' => 'Controllers',
+                        'controller' => 'error',
+                        'action' => 'show401'
+                    ));
+            }
+            else
+            {
+                return $this->response->redirect( 'login' );
+            }
         }
 
         return TRUE;

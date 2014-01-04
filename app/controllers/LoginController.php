@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class IndexController extends \Base\Controller
+class LoginController extends \Base\Controller
 {
     public function beforeExecuteRoute()
     {
@@ -13,6 +13,6 @@ class IndexController extends \Base\Controller
 
     public function indexAction()
     {
-        $this->view->pick( 'main/index' );
+        $this->view->pick( 'main/login' );
     }
 }

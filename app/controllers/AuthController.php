@@ -22,6 +22,7 @@ class AuthController extends \Base\Controller
 
         // try to log in with credentials
         //
+        $this->redirect = 'dashboard';
         $loggedIn = \Actions\Users\Auth::login(
             array(
                 'email' => $email,
@@ -30,11 +31,8 @@ class AuthController extends \Base\Controller
 
         if ( ! $loggedIn )
         {
-            $this->setStatus( ERROR );
-            return FALSE;
+            $this->redirect = 'login';
         }
-
-        // @TODO redirect to either dashboard or login page
     }
 
     /**
@@ -45,10 +43,8 @@ class AuthController extends \Base\Controller
         \Actions\Users\Auth::destroyToken();
         \Actions\Users\Auth::destroySession();
 
-        $this->cookies->get( 'token' )->delete(); // doesn't work
-
+        $this->cookies->get( 'token' )->delete();
+        $this->redirect = 'login';
         $this->addMessage( "You've been logged out" ); 
-
-        // @TODO redirect to login page
     }
 }

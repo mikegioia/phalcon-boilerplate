@@ -1,5 +1,23 @@
 body {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: Candara, Calibri, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     font-size: 16px; }
+h1, h2, h3 {
+    font-weight: normal; margin: 0 0 10px; }
+fieldset {
+    margin-bottom: 15px; }
+legend h2 {
+    margin: 0; }
+ul, p {
+    line-height: 1.5em; }
+div.message {
+    margin-bottom: 10px; padding: 10px; color: white; }
+div.message.success {
+    background: green; }
+div.message.error {
+    background: red; }
+div.message.warning {
+    background: yellow; }
+div.message.notice {
+    background: blue; }
 #content {
-    padding: 0 15px; }
+    padding: 1%; }

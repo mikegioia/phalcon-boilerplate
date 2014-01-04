@@ -1,0 +1,17 @@
+<fieldset>
+    <legend>
+        <h2>Log in</h2>
+    </legend>
+    <form method="post" action="<?php echo $this->url->get( 'auth/login' ); ?>">
+        <label>Email address</label>
+        <br />
+        <input type="text" name="email" value="test@example.org" />
+        <br /><br />
+        <label>Password</label>
+        <br />
+        <input type="password" name="password" value="password" />
+        <br /><br />
+        <input type="submit" value="Log in" />
+        <a href="<?php echo $this->url->get( '' ); ?>">Cancel</a>
+    </form>
+</fieldset>

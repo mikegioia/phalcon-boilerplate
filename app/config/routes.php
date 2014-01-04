@@ -6,7 +6,7 @@ $router = new Phalcon\Mvc\Router( FALSE );
 //
 $router->removeExtraSlashes( TRUE );
 
-// base application: errors, auth
+// base application
 //
 $router->add(
     '/:controller/:action/:params',
