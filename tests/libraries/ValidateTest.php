@@ -24,7 +24,7 @@ class ValidateTest extends \UnitTestCase
         $this->assertCount( 1, \Lib\Util::getMessages() );
 
         $params = array(
-            'email' => 'email@example.org' );
+            'email' => 'test@example.org' );
         \Lib\Validate::add(
             'email',
             array(

@@ -33,6 +33,13 @@ if [ ! -f "../app/config/env/${env}.ini" ] ; then
     exit 1
 fi
 
+if [ ! -f "../app/config/config.local.ini" ] ; then
+    echo "Copying default '${env}' config file"
+    cp ../app/config/env/${env}.ini ../app/config/config.local.ini
+else
+    echo "'${env}' config file exists, skipping!"
+fi
+
 echo ''
 echo 'Done! Make sure you run the SQL statements.'
 echo 'For help, run ./update_sql_db.sh -h'

@@ -1,6 +1,6 @@
 {
-    "name" : "teachboost/phoenix",
-    "description" : "Titan Reborn",
+    "name" : "mikegioia/phaclon-boilerplate",
+    "description" : "Phalcon Boilerplate",
     "license" : "proprietary",
 
     "require" : {

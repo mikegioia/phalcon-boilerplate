@@ -11,7 +11,7 @@
     processIsolation="false"
     stopOnFailure="false"
     syntaxCheck="true">
-    <testsuite name="Phoenix Test Suite">
+    <testsuite name="Phalcon Boilerplate Test Suite">
         <directory>./</directory>
     </testsuite>
 </phpunit>

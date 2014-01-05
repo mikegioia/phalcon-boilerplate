@@ -15,8 +15,10 @@ include __DIR__ . "/../vendor/autoload.php";
 
 // bootstrap our application
 //
-$config = include APP_PATH . '/config/config.php';
-$localConfig = include APP_PATH . '/config/config.local.php';
+$config = new \Phalcon\Config\Adapter\Ini(
+    APP_PATH . '/config/config.ini' );
+$localConfig = new \Phalcon\Config\Adapter\Ini(
+    APP_PATH . '/config/config.local.ini' );
 $config->merge( $localConfig );
 
 include APP_PATH . '/config/loader.php';

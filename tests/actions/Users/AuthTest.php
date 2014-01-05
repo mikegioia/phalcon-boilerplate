@@ -60,7 +60,7 @@ class AuthTest extends \UnitTestCase
 
     public function testLoginWithToken()
     {
-        $token = \Actions\Users\Auth::createToken( 2, TRUE );
+        $token = \Actions\Users\Auth::createToken( 1, TRUE );
         $this->assertTrue( strlen( $token ) > 0 );
         
         $user = \Actions\Users\Auth::authorizeToken();
@@ -68,7 +68,7 @@ class AuthTest extends \UnitTestCase
         $this->assertObjectHasAttribute( 'id', $user );
         $this->assertTrue( valid( $user->id ) );
         $this->assertTrue(
-            \Actions\Users\Auth::destroyToken( 2 ) );
+            \Actions\Users\Auth::destroyToken( 1 ) );
     }
 
     public function testNoLoginParams()
@@ -96,7 +96,7 @@ class AuthTest extends \UnitTestCase
     {
         \Lib\Util::clearMessages();
         $params = array(
-            'email' => 'mike@example.org',
+            'email' => 'missing@example.org',
             'password' => 'password' );
 
         $this->assertCount( 0, \Lib\Util::getMessages() );
@@ -109,8 +109,8 @@ class AuthTest extends \UnitTestCase
     {
         \Lib\Util::clearMessages();
         $params = array(
-            'email' => 'mike@teachboost.com',
-            'password' => 'password' );
+            'email' => 'test@example.org',
+            'password' => 'incorrect' );
 
         $this->assertCount( 0, \Lib\Util::getMessages() );
         $this->assertFalse(
@@ -122,8 +122,8 @@ class AuthTest extends \UnitTestCase
     {
         \Lib\Util::clearMessages();
         $params = array(
-            'email' => 'mikegioia+testteacher@gmail.com', // ID 3889
-            'password' => 'bonner' );
+            'email' => 'test@example.org',
+            'password' => 'password' );
 
         $this->assertCount( 0, \Lib\Util::getMessages() );
         $this->assertTrue(
@@ -137,9 +137,9 @@ class AuthTest extends \UnitTestCase
     public function testDestroyCookieSession()
     {
         $this->assertTrue(
-            \Actions\Users\Auth::destroyToken( 3889 ) );
+            \Actions\Users\Auth::destroyToken( 1 ) );
         $this->assertTrue(
-            \Actions\Users\Auth::destroySession( 3889 ) );
+            \Actions\Users\Auth::destroySession( 1 ) );
 
         $session = DI::getDefault()->getSession();
         $this->assertFalse( valid( $session->get( 'user_id' ) ) );
