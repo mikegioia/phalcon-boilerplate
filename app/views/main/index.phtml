@@ -67,15 +67,46 @@
     <legend>
         <h2>REST API Example</h2>
     </legend>
-    <ul>
+    <ul id="rest">
         <li>
-            <a href="">POST /api/auth/login</a>
+            <a href="#rest" data-url="<?php echo $this->url->get( 'api/auth/login' ); ?>"
+                data-params='{"email":"test@example.org","password":"password"}' data-method="POST">
+                POST /api/auth/login
+            </a>
         </li>
         <li>
-            <a href="">POST /api/auth/logout</a>
+            <a href="#rest" data-url="<?php echo $this->url->get( 'api/auth/logout' ); ?>"
+                data-params='{}' data-method="POST">
+                POST /api/auth/logout
+            </a>
         </li>
         <li>
-            <a href="">GET /api/dashboard/stats</a>
+            <a href="#rest" data-url="<?php echo $this->url->get( 'api/dashboard' ); ?>"
+                data-params='{}' data-method="GET">
+                GET /api/dashboard
+            </a>
         </li>
     </ul>
+    <p>
+        Response:
+    </p>
+    <div>
+        <pre id="response">Click one of the links above</pre>
+    </div>
 </fieldset>
+
+<script>
+    $( '#rest a' ).on( 'click', function () {
+        var $this = $( this );
+        $.ajax({
+            url: $this.data( 'url' ),
+            type: $this.data( 'method' ),
+            data: $this.data( 'params' ),
+            dataType: 'json',
+            success: function ( response ) {
+                document.getElementById( 'response').innerHTML = 
+                    JSON.stringify( response, undefined, 4 );
+            }
+        });
+    });
+</script>

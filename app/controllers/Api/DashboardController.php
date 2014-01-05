@@ -6,6 +6,8 @@ class DashboardController extends \Base\Controller
 {
     public function beforeExecuteRoute()
     {
+        $this->responseMode = 'api';
+
         parent::beforeExecuteRoute();
     }
 

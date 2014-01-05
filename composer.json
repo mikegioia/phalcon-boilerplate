@@ -4,7 +4,8 @@
     "license" : "proprietary",
 
     "require" : {
-        "phalcon/incubator": "dev-master"
+        "phalcon/incubator": "dev-master",
+        "ircmaxell/password-compat": "dev-master"
     },
 
     "require-dev" : {

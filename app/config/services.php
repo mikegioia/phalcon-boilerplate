@@ -179,13 +179,7 @@ $di->set(
     'view', 
     function () use ( $di, $config ) {
         $view = new View();
-
-        if ( $config->app->responseMode === 'api' ):
-            $view->disable();
-        else:
-            $view->setViewsDir( APP_PATH .'/views/' );
-        endif;
-
+        $view->setViewsDir( APP_PATH .'/views/' );
         return $view;
     },
     TRUE );

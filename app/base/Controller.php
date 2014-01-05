@@ -76,6 +76,7 @@ class Controller extends \Phalcon\Mvc\Controller
 
             // set the json headers and store our response in the view
             //
+            $this->view->disable();
             $this->response->setHeader( 'Content-Type', 'application/json' );
             $this->response->setContent( json_encode( $response ) );
             $this->response->send();
@@ -105,7 +106,8 @@ class Controller extends \Phalcon\Mvc\Controller
                     array(
                         'namespace' => 'Controllers',
                         'controller' => 'error',
-                        'action' => 'show401'
+                        'action' => 'show401',
+                        'params' => array( $this->responseMode )
                     ));
             }
             else

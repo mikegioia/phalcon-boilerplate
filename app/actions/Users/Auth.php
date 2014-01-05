@@ -75,16 +75,76 @@ class Auth extends \Base\Action
         // hash the plaintext password and compare it against the
         // database password.
         //
-        $salt = substr( $user->password, 0, 29 );
-        $crypt_password = crypt( $password, $salt );
-
-        if ( ! str_eq( $user->password, $crypt_password ) )
+        if ( ! \Actions\Users\Auth::passwordVerify( $password, $user->password ) )
         {
             \Lib\Util::addMessage( 'Email and password do not match', ERROR );
             return FALSE;
         }
 
         return $user;
+    }
+
+    /**
+     * Hash the password using bcrypt algorithm. This function takes
+     * in a plaintext password, generates a strong and random salt,
+     * and returns the crypted password to be stored for the user.
+     *
+     * @param string $password
+     * @return string | false
+     */
+    public static function passwordHash( $password, $options = array() )
+    {
+        $cost = map( $options, 'cost', 10 );
+        $raw_salt_len = map( $options, 'raw_salt_len', 16 );
+        $required_salt_len = map( $options, 'required_salt_len', 22 );
+
+        // generate the salted hash from urandom using our cost. we
+        // need to replace plus signs because it causes problems.
+        //
+        $hash_format = sprintf( "$2a$%02d$", $cost );
+        $buffer = mcrypt_create_iv( $raw_salt_len, MCRYPT_DEV_URANDOM );
+        $salt = str_replace( '+', '.', base64_encode( $buffer ) );
+        $salt = substr( $salt, 0, $required_salt_len );
+        $hash = $hash_format . $salt;
+
+        // encrypt the password with the salted hash
+        //
+        $return = crypt( $password, $hash );
+
+        if ( ! is_string( $return ) || strlen( $return ) <= 13 )
+        {
+            return FALSE;
+        }
+
+        return $return;
+    }
+
+    /**
+     * Verify a password against a hash using a timing attack resistant
+     * approach.
+     *
+     * @param string $password
+     * @param string $hash
+     * @return boolean
+     */
+    public static function passwordVerify( $password, $hash )
+    {
+        $ret = crypt( $password, $hash );
+        $status = 0;
+
+        if ( !is_string( $ret )
+            || strlen( $ret ) != strlen( $hash )
+            || strlen( $ret ) <= 13 )
+        {
+            return FALSE;
+        }
+
+        for ( $i = 0; $i < strlen( $ret ); $i++ )
+        {
+            $status |= ( ord( $ret[ $i ] ) ^ ord( $hash[ $i ] ) );
+        }
+
+        return $status === 0;
     }
 
     /**
@@ -151,7 +211,7 @@ class Auth extends \Base\Action
             $config->cookies->path,
             $config->cookies->secure,
             $config->paths->hostname,
-            $config->cookies->http_only );
+            $config->cookies->httpOnly );
 
         if ( ! $cookieSet )
         {
@@ -165,7 +225,7 @@ class Auth extends \Base\Action
         $settingSaved = $setting->save(
             array(
                 'object_id' => $userId,
-                'object_type' => USER,
+                'object_type' => 'user',
                 'key' => $config->settings->cookieToken,
                 'value' => $token
             ));
@@ -190,16 +250,19 @@ class Auth extends \Base\Action
     public static function destroyToken( $userId = NULL )
     {
         $config = self::getService( 'config' );
+        $cookies = self::getService( 'cookies' );
         $userId = ( $userId ) ? $userId : \Lib\Auth::getUserId();
         $setting = \Db\Sql\Settings::get(
             $userId,
-            USER,
+            'user',
             $config->settings->cookieToken,
             array(
                 'first' => TRUE
             ));
 
-        return ( $setting && $setting->delete() );
+        return ( $setting
+            && $setting->delete()
+            && $cookies->get( 'token' )->delete() );
     }
 
     /**
@@ -268,18 +331,5 @@ class Auth extends \Base\Action
         while ( $rnd >= $range );
         
         return $min + $rnd;
-    }
-
-    /**
-     * Get a user from SQL and interpret that user's roles. A user's
-     * roles should be cached under user.roles and reset when the user
-     * is cache busted.
-     *
-     * @param integer $userId
-     * @return array
-     */
-    public static function getRoles( $userId )
-    {
-        return array(); // stub
     }
 }

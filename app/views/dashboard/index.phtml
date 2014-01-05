@@ -1,6 +1,7 @@
 <h1>Dashboard</h1>
 <p>
-    You are logged in as <?php echo $user->name; ?>
+    You are logged in as <?php echo $user[ 'name' ]; ?>!
+    <a href="<?php echo $this->url->get( 'auth/logout' ); ?>">Log out</a>.
 </p>
 <pre>
 <?php print_r( $user ); ?>

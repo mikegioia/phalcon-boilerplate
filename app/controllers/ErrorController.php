@@ -11,13 +11,18 @@ class ErrorController extends \Base\Controller
         parent::beforeExecuteRoute();
     }
 
-    public function show404Action()
+    public function show404Action( $responseMode = '' )
     {
         /**
          * Alternatively we can set the 404 header:
          *   $this->response->setHeader( 404, 'Not Found' );
          */
-        if ( $this->config->app->responseMode === 'api' )
+        if ( $responseMode )
+        {
+            $this->responseMode = $responseMode;
+        }
+
+        if ( $this->responseMode === 'api' )
         {
             $this->setStatus( ERROR );
             $this->setCode( 404 );
@@ -29,9 +34,14 @@ class ErrorController extends \Base\Controller
         }
     }
 
-    public function show401Action()
+    public function show401Action( $responseMode = '' )
     {
-        if ( $this->config->app->responseMode === 'api' )
+        if ( $responseMode )
+        {
+            $this->responseMode = $responseMode;
+        }
+
+        if ( $this->responseMode === 'api' )
         {
             $this->setStatus( ERROR );
             $this->setCode( 401 );

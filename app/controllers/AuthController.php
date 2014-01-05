@@ -41,9 +41,7 @@ class AuthController extends \Base\Controller
     public function logoutAction()
     {
         \Actions\Users\Auth::destroyToken();
-        \Actions\Users\Auth::destroySession();
 
-        $this->cookies->get( 'token' )->delete();
         $this->redirect = 'login';
         $this->addMessage( "You've been logged out" ); 
     }

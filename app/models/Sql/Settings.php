@@ -15,7 +15,7 @@ class Settings extends \Base\Model
     public function beforeSave()
     {
         $timestamp = new \DateTime();
-        $this->timestamp = $timestamp->format( DATE_DATABASE );
+        $this->created_at = $timestamp->format( DATE_DATABASE );
     }
 
     /**

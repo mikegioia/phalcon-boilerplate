@@ -11,6 +11,17 @@ class AuthTest extends \UnitTestCase
         parent::setUp();
     }
 
+    public function testPasswordHash()
+    {
+        $cryptedPassword = \Actions\Users\Auth::passwordHash( 'password' );
+
+        $this->assertTrue(
+            \Actions\Users\Auth::passwordVerify(
+                'password',
+                $cryptedPassword
+            ));
+    }
+
     public function testSession()
     {
         $session = DI::getDefault()->getSession();
