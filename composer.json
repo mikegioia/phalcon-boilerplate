@@ -1,7 +1,7 @@
 {
-    "name" : "mikegioia/phaclon-boilerplate",
+    "name" : "mikegioia/phalcon-boilerplate",
     "description" : "Phalcon Boilerplate",
-    "license" : "proprietary",
+    "license" : "MIT",
 
     "require" : {
         "phalcon/incubator": "dev-master",
