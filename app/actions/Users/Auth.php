@@ -46,6 +46,8 @@ class Auth extends \Base\Action
         $session = self::getService( 'session' );
         $session->set( 'user_id', $user->id );
         $session->set( 'user', $user->toArray() );
+        \Lib\Auth::$userId = $user->id;
+        \Lib\Auth::$user = $user->toArray();
 
         // write out the cookie token
         //
