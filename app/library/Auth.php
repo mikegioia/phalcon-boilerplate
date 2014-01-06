@@ -49,9 +49,19 @@ class Auth extends \Base\Library
         return self::$userId;
     }
 
+    public static function setUserId( $userId )
+    {
+        self::$userId = $userId;
+    }
+
     public static function getUser()
     {
         return self::$user;
+    }
+
+    public static function setUser( $user )
+    {
+        self::$user = $user;
     }
 
     /**

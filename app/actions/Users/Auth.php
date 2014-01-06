@@ -46,8 +46,11 @@ class Auth extends \Base\Action
         $session = self::getService( 'session' );
         $session->set( 'user_id', $user->id );
         $session->set( 'user', $user->toArray() );
-        \Lib\Auth::$userId = $user->id;
-        \Lib\Auth::$user = $user->toArray();
+
+        // update the auth user
+        //
+        \Lib\Auth::setUserId( $user->id );
+        \Lib\Auth::setUser( $user->toArray() );
 
         // write out the cookie token
         //
@@ -77,76 +80,15 @@ class Auth extends \Base\Action
         // hash the plaintext password and compare it against the
         // database password.
         //
-        if ( ! \Actions\Users\Auth::passwordVerify( $password, $user->password ) )
+        $security = self::getService( 'security' );
+
+        if ( ! $security->checkHash( $password, $user->password ) )
         {
             \Lib\Util::addMessage( 'Email and password do not match', ERROR );
             return FALSE;
         }
 
         return $user;
-    }
-
-    /**
-     * Hash the password using bcrypt algorithm. This function takes
-     * in a plaintext password, generates a strong and random salt,
-     * and returns the crypted password to be stored for the user.
-     *
-     * @param string $password
-     * @return string | false
-     */
-    public static function passwordHash( $password, $options = array() )
-    {
-        $cost = map( $options, 'cost', 10 );
-        $raw_salt_len = map( $options, 'raw_salt_len', 16 );
-        $required_salt_len = map( $options, 'required_salt_len', 22 );
-
-        // generate the salted hash from urandom using our cost. we
-        // need to replace plus signs because it causes problems.
-        //
-        $hash_format = sprintf( "$2a$%02d$", $cost );
-        $buffer = mcrypt_create_iv( $raw_salt_len, MCRYPT_DEV_URANDOM );
-        $salt = str_replace( '+', '.', base64_encode( $buffer ) );
-        $salt = substr( $salt, 0, $required_salt_len );
-        $hash = $hash_format . $salt;
-
-        // encrypt the password with the salted hash
-        //
-        $return = crypt( $password, $hash );
-
-        if ( ! is_string( $return ) || strlen( $return ) <= 13 )
-        {
-            return FALSE;
-        }
-
-        return $return;
-    }
-
-    /**
-     * Verify a password against a hash using a timing attack resistant
-     * approach.
-     *
-     * @param string $password
-     * @param string $hash
-     * @return boolean
-     */
-    public static function passwordVerify( $password, $hash )
-    {
-        $ret = crypt( $password, $hash );
-        $status = 0;
-
-        if ( !is_string( $ret )
-            || strlen( $ret ) != strlen( $hash )
-            || strlen( $ret ) <= 13 )
-        {
-            return FALSE;
-        }
-
-        for ( $i = 0; $i < strlen( $ret ); $i++ )
-        {
-            $status |= ( ord( $ret[ $i ] ) ^ ord( $hash[ $i ] ) );
-        }
-
-        return $status === 0;
     }
 
     /**
