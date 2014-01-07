@@ -13,10 +13,11 @@ class AuthTest extends \UnitTestCase
 
     public function testPasswordHash()
     {
-        $cryptedPassword = \Actions\Users\Auth::passwordHash( 'password' );
+        $security = DI::getDefault()->getSecurity();
+        $cryptedPassword = $security->hash( 'password' );
 
         $this->assertTrue(
-            \Actions\Users\Auth::passwordVerify(
+            $security->checkHash(
                 'password',
                 $cryptedPassword
             ));
@@ -28,8 +29,6 @@ class AuthTest extends \UnitTestCase
 
         $this->assertFalse( $session->start() );
         $this->assertFalse( $session->isStarted() );
-
-        @session_start();
 
         $session->set( 'some', 'value' );
         $this->assertEquals(
@@ -52,7 +51,7 @@ class AuthTest extends \UnitTestCase
 
     public function testCreateDestroyToken()
     {
-        $token = \Actions\Users\Auth::createToken( 1, TRUE );
+        $token = \Actions\Users\Auth::createToken( 1, TRUE, TRUE );
         $this->assertTrue( strlen( $token ) > 0 );
         $this->assertTrue(
             \Actions\Users\Auth::destroyToken( 1 ) );
@@ -60,7 +59,7 @@ class AuthTest extends \UnitTestCase
 
     public function testLoginWithToken()
     {
-        $token = \Actions\Users\Auth::createToken( 1, TRUE );
+        $token = \Actions\Users\Auth::createToken( 1, TRUE, TRUE );
         $this->assertTrue( strlen( $token ) > 0 );
         
         $user = \Actions\Users\Auth::authorizeToken();

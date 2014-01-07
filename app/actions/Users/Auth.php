@@ -140,7 +140,7 @@ class Auth extends \Base\Action
      * @param bool $returnToken
      * @return bool | string
      */
-    public static function createToken( $userId, $returnToken = FALSE )
+    public static function createToken( $userId, $returnToken = FALSE, $setCookie = TRUE )
     {
         $token = self::generateRandomToken();
         $cookies = self::getService( 'cookies' );
@@ -148,19 +148,22 @@ class Auth extends \Base\Action
 
         // set the cookie
         //
-        $cookieSet = $cookies->set(
-            'token',
-            $token,
-            time() + $config->cookies->expire,
-            $config->cookies->path,
-            $config->cookies->secure,
-            $config->paths->hostname,
-            $config->cookies->httpOnly );
-
-        if ( ! $cookieSet )
+        if ( $setCookie )
         {
-            \Lib\Util::addMessage( 'Failed to save login cookie', ERROR );
-            return FALSE;
+            $cookieSet = $cookies->set(
+                'token',
+                $token,
+                time() + $config->cookies->expire,
+                $config->cookies->path,
+                $config->cookies->secure,
+                $config->paths->hostname,
+                $config->cookies->httpOnly );
+
+            if ( ! $cookieSet )
+            {
+                \Lib\Util::addMessage( 'Failed to save login cookie', ERROR );
+                return FALSE;
+            }
         }
 
         // save the user setting 'cookie_token'
@@ -217,9 +220,13 @@ class Auth extends \Base\Action
     public static function destroySession()
     {
         $session = self::getService( 'session' );
-
         $session->remove( 'user_id' );
         $session->remove( 'user' );
+
+        // update the auth user
+        //
+        \Lib\Auth::setUserId( NULL );
+        \Lib\Auth::setUser( NULL );
 
         return $session->destroy();
     }
