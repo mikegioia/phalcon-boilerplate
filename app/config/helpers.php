@@ -1,21 +1,36 @@
 <?php
 
 /**
- * Utility helper functions, exist in global namespace
+ * Chcek if two values are numerically the same. Casts the
+ * arguments as integers to type check.
+ *
+ * @param integer $arg_1
+ * @param integer $arg_2
+ * @return boolean
  */
-
 function int_eq( $arg_1, $arg_2 )
 {
     return (int) $arg_1  === (int) $arg_2;
 }
 
+/**
+ * Chcek if two values are equal string. Casts the
+ * arguments as strings to type check.
+ *
+ * @param string $arg_1
+ * @param string $arg_2
+ * @return boolean
+ */
 function str_eq( $arg_1, $arg_2 )
 {
     return "". $arg_1 === "". $arg_2;
 }
 
 /**
- * Returns the indexed element for the mixed object
+ * Returns the indexed element for the mixed object. You can specify
+ * a default value to return in $default and specify if you want to
+ * just find out of the index exists ($check_index_exists). The latter
+ * will return a boolean.
  *
  * @param mixed $object
  * @param string $index
@@ -23,7 +38,7 @@ function str_eq( $arg_1, $arg_2 )
  * @param boolean $check_index_exists
  * @return boolean or mixed
  */
-function map( $object, $index, $default = FALSE, $check_index_exists = FALSE )
+function get( $object, $index, $default = FALSE, $check_index_exists = FALSE )
 {
     if ( is_array( $object ) )
     {

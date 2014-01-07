@@ -41,7 +41,7 @@ class Settings extends \Base\Model
                 ))
             ->execute();
 
-        return ( map( $options, 'first' ) === TRUE )
+        return ( get( $options, 'first' ) === TRUE )
             ? $settings->getFirst()
             : $settings;
     }
@@ -66,7 +66,7 @@ class Settings extends \Base\Model
                 ))
             ->execute();
 
-        return ( map( $options, 'first' ) === TRUE )
+        return ( get( $options, 'first' ) === TRUE )
             ? $settings->getFirst()
             : $settings;
     }

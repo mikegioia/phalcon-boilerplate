@@ -36,7 +36,7 @@ class Auth extends \Base\Action
             $params[ 'email' ],
             $params[ 'password' ] );
 
-        if ( ! valid( map( $user, 'id' ) ) )
+        if ( ! valid( get( $user, 'id' ) ) )
         {
             return FALSE;
         }

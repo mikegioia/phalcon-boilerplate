@@ -36,7 +36,7 @@ class Validate extends \Base\Library
                     $message = sprintf( "%s is required", ucfirst( $key ) );
                     $testObj = new PresenceOf(
                         array(
-                            'message' => map( $params, 'message', $message )
+                            'message' => get( $params, 'message', $message )
                         ));
                     break;
 
@@ -44,7 +44,7 @@ class Validate extends \Base\Library
                     $message = "Please specify a valid email address";
                     $testObj = new Email(
                         array(
-                            'message' => map( $params, 'message', $message )
+                            'message' => get( $params, 'message', $message )
                         ));
                     break;
 
@@ -52,8 +52,8 @@ class Validate extends \Base\Library
                     $message = "Please specify a valid email address";
                     $testObj = new StringLength(
                         array(
-                            'message' => map( $params, 'message', $message ),
-                            'min' => map( $params, 'min', 0 )
+                            'message' => get( $params, 'message', $message ),
+                            'min' => get( $params, 'min', 0 )
                         ));
                     break;
             }
