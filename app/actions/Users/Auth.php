@@ -140,7 +140,7 @@ class Auth extends \Base\Action
      * @param bool $returnToken
      * @return bool | string
      */
-    public static function createToken( $userId, $returnToken = FALSE, $setCookie = TRUE )
+    public static function createToken( $userId, $returnToken = FALSE )
     {
         $token = self::generateRandomToken();
         $cookies = self::getService( 'cookies' );
@@ -148,22 +148,19 @@ class Auth extends \Base\Action
 
         // set the cookie
         //
-        if ( $setCookie )
-        {
-            $cookieSet = $cookies->set(
-                'token',
-                $token,
-                time() + $config->cookies->expire,
-                $config->cookies->path,
-                $config->cookies->secure,
-                $config->paths->hostname,
-                $config->cookies->httpOnly );
+        $cookieSet = $cookies->set(
+            'token',
+            $token,
+            time() + $config->cookies->expire,
+            $config->cookies->path,
+            $config->cookies->secure,
+            $config->paths->hostname,
+            $config->cookies->httpOnly );
 
-            if ( ! $cookieSet )
-            {
-                \Lib\Util::addMessage( 'Failed to save login cookie', ERROR );
-                return FALSE;
-            }
+        if ( ! $cookieSet )
+        {
+            \Lib\Util::addMessage( 'Failed to save login cookie', ERROR );
+            return FALSE;
         }
 
         // save the user setting 'cookie_token'
