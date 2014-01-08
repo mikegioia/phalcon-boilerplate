@@ -97,7 +97,7 @@ $di->set(
                 'password' => $config->database->password,
                 'dbname' => $config->database->dbname,
                 'persistent' => $config->database->persistent
-        ));
+            ));
 
         if ( $config->profiling->query )
         {
@@ -149,13 +149,6 @@ $di->set(
 $di->set(
     'cache',
     function () use ( $config ) {
-        // connect to redis
-        //
-        $redis = new Redis();
-        $redis->connect(
-            $config->redis->cache->host,
-            $config->redis->cache->port );
-
         // create a Data frontend and set a default lifetime to 1 hour
         //
         $frontend = new \Phalcon\Cache\Frontend\Data(
@@ -163,13 +156,29 @@ $di->set(
                 'lifetime' => 3600
             ));
 
-        // create the cache passing the connection
-        //
-        return new \Phalcon\Cache\Backend\Redis(
-            $frontend,
-            array(
-                'redis' => $redis
-            ));
+        if ( $config->session->adapter === 'redis' ):
+            // connect to redis
+            //
+            $redis = new Redis();
+            $redis->connect(
+                $config->redis->cache->host,
+                $config->redis->cache->port );
+
+            // create the cache passing the connection
+            //
+            return new \Phalcon\Cache\Backend\Redis(
+                $frontend,
+                array(
+                    'redis' => $redis
+                ));
+        else:
+            return new \Phalcon\Cache\Backend\File(
+                $frontend,
+                array(
+                    'cacheDir' => $config->cache->dir,
+                    'prefix' => $config->cache->prefix
+                ));
+        endif;
     },
     TRUE );
 

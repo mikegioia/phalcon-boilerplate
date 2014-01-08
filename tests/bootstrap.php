@@ -45,5 +45,8 @@ $loader->registerDirs(
         ROOT_PATH
     ))->register();
 
+// start the session
+//
+$di->getSession()->start();
+
 \Phalcon\DI::setDefault( $di );
-@session_start();

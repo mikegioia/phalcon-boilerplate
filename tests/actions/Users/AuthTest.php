@@ -28,7 +28,7 @@ class AuthTest extends \UnitTestCase
         $session = DI::getDefault()->getSession();
 
         $this->assertFalse( $session->start() );
-        $this->assertFalse( $session->isStarted() );
+        $this->assertTrue( $session->isStarted() );
 
         $session->set( 'some', 'value' );
         $this->assertEquals(
