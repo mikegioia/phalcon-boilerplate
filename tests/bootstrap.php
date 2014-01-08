@@ -47,6 +47,8 @@ $loader->registerDirs(
 
 // start the session
 //
-$di->getSession()->start();
+if ( ! $di->getSession()->isStarted() ):
+    $di->getSession()->start();
+endif;
 
 \Phalcon\DI::setDefault( $di );
