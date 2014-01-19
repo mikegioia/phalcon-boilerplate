@@ -17,6 +17,10 @@ class Auth extends \Base\Library
      */
     public static function init()
     {
+        // save the userId from the session
+        //
+        self::$userId = self::getService( 'session' )->get( 'user_id' );
+
         // read in the session. if it's not set, try to re-authorize them
         // with a login token. authorizeToken will set the session info
         // if a valid token exists.
@@ -28,10 +32,6 @@ class Auth extends \Base\Library
                 return FALSE;
             }
         }
-
-        // save the userId from the session
-        //
-        self::$userId = self::getService( 'session' )->get( 'user_id' );
 
         // load user, roles, and settings. if the requested userId is the
         // same as the session, then just use the session user.
