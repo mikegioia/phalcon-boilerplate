@@ -45,12 +45,8 @@ class Auth extends \Base\Action
         //
         $session = self::getService( 'session' );
         $session->set( 'user_id', $user->id );
-        $session->set( 'user', $user->toArray() );
 
-        // update the auth user
-        //
-        \Lib\Auth::setUserId( $user->id );
-        \Lib\Auth::setUser( $user->toArray() );
+        \Lib\Auth::load( $user->id );
 
         // write out the cookie token
         //
@@ -127,7 +123,6 @@ class Auth extends \Base\Action
         //
         $session = self::getService( 'session' );
         $session->set( 'user_id', $user->id );
-        $session->set( 'user', $user->toArray() );
 
         return $user;
     }
@@ -218,12 +213,8 @@ class Auth extends \Base\Action
     {
         $session = self::getService( 'session' );
         $session->remove( 'user_id' );
-        $session->remove( 'user' );
 
-        // update the auth user
-        //
-        \Lib\Auth::setUserId( NULL );
-        \Lib\Auth::setUser( NULL );
+        \Lib\Auth::destroy();
 
         return $session->destroy();
     }

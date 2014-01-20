@@ -1,6 +1,6 @@
 <?php
 
-namespace Libraries;
+namespace Library;
 
 class ValidateTest extends \UnitTestCase
 {
@@ -9,6 +9,10 @@ class ValidateTest extends \UnitTestCase
         parent::setUp();
     }
 
+    /**
+     * @group library
+     * @group validate
+     */
     public function testEmail()
     {
         $params = array(
@@ -36,6 +40,10 @@ class ValidateTest extends \UnitTestCase
         $this->assertCount( 0, \Lib\Util::getMessages() );
     }
 
+    /**
+     * @group library
+     * @group validate
+     */
     public function testExists()
     {
         $params = array(
@@ -61,6 +69,10 @@ class ValidateTest extends \UnitTestCase
         $this->assertCount( 0, \Lib\Util::getMessages() );
     }
 
+    /**
+     * @group library
+     * @group validate
+     */
     public function testLength()
     {
         $params = array(
@@ -90,6 +102,10 @@ class ValidateTest extends \UnitTestCase
         $this->assertCount( 0, \Lib\Util::getMessages() );
     }
 
+    /**
+     * @group library
+     * @group validate
+     */
     public function testInvalidType()
     {
         try

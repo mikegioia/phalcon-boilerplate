@@ -1,6 +1,6 @@
 <?php
 
-namespace Libraries;
+namespace Library;
 
 class CacheTest extends \UnitTestCase
 {
@@ -9,6 +9,10 @@ class CacheTest extends \UnitTestCase
         parent::setUp();
     }
 
+    /**
+     * @group library
+     * @group cache
+     */
     public function testGetSet()
     {
         $test = \Lib\Cache::getSet(

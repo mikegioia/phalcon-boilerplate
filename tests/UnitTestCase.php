@@ -5,23 +5,20 @@ use Phalcon\DI as DI,
 
 abstract class UnitTestCase extends PhalconTestCase
 {
-    private $_loaded = FALSE;
-
     protected function setUp()
     {
         $di = DI::getDefault();
 
+        // override the cookie service
+        //
+        $di->setShared(
+            'cookies',
+            function() {
+                $cookies = new \Lib\Mocks\Cookies();
+                $cookies->useEncryption( FALSE );
+                return $cookies;
+            });
+
         parent::setUp( $di );
-
-        $this->_loaded = TRUE;
-    }
-
-    public function __destruct()
-    {
-        if ( ! $this->_loaded )
-        {
-            throw new \PHPUnit_Framework_IncompleteTestError(
-                'Please run parent::setUp().' );
-        }
     }
 }

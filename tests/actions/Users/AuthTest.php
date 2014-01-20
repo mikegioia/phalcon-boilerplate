@@ -11,6 +11,11 @@ class AuthTest extends \UnitTestCase
         parent::setUp();
     }
 
+    /**
+     * @group actions
+     * @group users
+     * @group auth
+     */
     public function testPasswordHash()
     {
         $security = DI::getDefault()->getSecurity();
@@ -23,6 +28,11 @@ class AuthTest extends \UnitTestCase
             ));
     }
 
+    /**
+     * @group actions
+     * @group users
+     * @group auth
+     */
     public function testSession()
     {
         $session = DI::getDefault()->getSession();
@@ -40,6 +50,11 @@ class AuthTest extends \UnitTestCase
             'my-default' );
     }
 
+    /**
+     * @group actions
+     * @group users
+     * @group auth
+     */
     public function testRandomToken()
     {
         $token1 = \Actions\Users\Auth::generateRandomToken();
@@ -49,6 +64,11 @@ class AuthTest extends \UnitTestCase
         $this->assertFalse( $token1 == $token2 );
     }
 
+    /**
+     * @group actions
+     * @group users
+     * @group auth
+     */
     public function testCreateDestroyToken()
     {
         $token = \Actions\Users\Auth::createToken( 1, TRUE );
@@ -57,6 +77,11 @@ class AuthTest extends \UnitTestCase
             \Actions\Users\Auth::destroyToken( 1 ) );
     }
 
+    /**
+     * @group actions
+     * @group users
+     * @group auth
+     */
     public function testLoginWithToken()
     {
         $token = \Actions\Users\Auth::createToken( 1, TRUE );
@@ -70,6 +95,11 @@ class AuthTest extends \UnitTestCase
             \Actions\Users\Auth::destroyToken( 1 ) );
     }
 
+    /**
+     * @group actions
+     * @group users
+     * @group auth
+     */
     public function testNoLoginParams()
     {
         $params = array();
@@ -78,6 +108,11 @@ class AuthTest extends \UnitTestCase
         $this->assertCount( 3, \Lib\Util::getMessages() );
     }
 
+    /**
+     * @group actions
+     * @group users
+     * @group auth
+     */
     public function testBadLoginParams()
     {
         \Lib\Util::clearMessages();
@@ -91,6 +126,11 @@ class AuthTest extends \UnitTestCase
         $this->assertCount( 1, \Lib\Util::getMessages() );
     }
 
+    /**
+     * @group actions
+     * @group users
+     * @group auth
+     */
     public function testNonExistingLoginEmail()
     {
         \Lib\Util::clearMessages();
@@ -104,6 +144,11 @@ class AuthTest extends \UnitTestCase
         $this->assertCount( 1, \Lib\Util::getMessages() );
     }
 
+    /**
+     * @group actions
+     * @group users
+     * @group auth
+     */
     public function testBadLoginCredentials()
     {
         \Lib\Util::clearMessages();
@@ -117,6 +162,11 @@ class AuthTest extends \UnitTestCase
         $this->assertCount( 1, \Lib\Util::getMessages() );
     }
 
+    /**
+     * @group actions
+     * @group users
+     * @group auth
+     */
     public function testCorrectLoginCredentials()
     {
         \Lib\Util::clearMessages();
@@ -133,12 +183,17 @@ class AuthTest extends \UnitTestCase
         $this->assertTrue( valid( $session->get( 'user_id' ) ) );
     }
 
+    /**
+     * @group actions
+     * @group users
+     * @group auth
+     */
     public function testDestroyCookieSession()
     {
         $this->assertTrue(
             \Actions\Users\Auth::destroyToken( 1 ) );
         $this->assertTrue(
-            \Actions\Users\Auth::destroySession( 1 ) );
+            \Actions\Users\Auth::destroySession() );
 
         $session = DI::getDefault()->getSession();
         $this->assertFalse( valid( $session->get( 'user_id' ) ) );

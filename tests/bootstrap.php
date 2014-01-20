@@ -26,17 +26,6 @@ include APP_PATH . '/config/services.php';
 include APP_PATH . '/config/constants.php';
 include APP_PATH . '/config/helpers.php';
 
-// override the cookie service
-//
-$di->set(
-    'cookies',
-    function() {
-        $cookies = new \Lib\Mocks\Cookies();
-        $cookies->useEncryption( FALSE );
-        return $cookies;
-    },
-    TRUE );
-
 // use the application autoloader to autoload the classes
 // autoload the dependencies found in composer
 //

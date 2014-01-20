@@ -1,6 +1,6 @@
 <?php
 
-namespace Libraries;
+namespace Library;
 
 class AuthTest extends \UnitTestCase
 {
@@ -9,16 +9,31 @@ class AuthTest extends \UnitTestCase
         parent::setUp();
     }
 
+    protected function tearDown()
+    {
+        // log out after every function
+        //
+        \Lib\Auth::destroy();
+    }
+
+    /**
+     * @group library
+     * @group auth
+     */
     public function testInit()
     {
         $this->assertFalse( \Lib\Auth::init() );
     }
 
+    /**
+     * @group library
+     * @group auth
+     */
     public function testBadManualLoading()
     {
         try
         {
-            \Lib\Auth::load();
+            \Lib\Auth::load( NULL );
         }
         catch ( \Base\Exception $expected )
         {
@@ -28,6 +43,10 @@ class AuthTest extends \UnitTestCase
         $this->fail( "Invalid auth test exception wasn't raised." );
     }
 
+    /**
+     * @group library
+     * @group auth
+     */
     public function testManualLoading()
     {
         \Lib\Auth::load( 1 );

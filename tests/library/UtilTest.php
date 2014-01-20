@@ -1,6 +1,6 @@
 <?php
 
-namespace Libraries;
+namespace Library;
 
 class UtilTest extends \UnitTestCase
 {
@@ -9,18 +9,30 @@ class UtilTest extends \UnitTestCase
         parent::setUp();
     }
 
+    /**
+     * @group library
+     * @group util
+     */
     public function testRemoveMessage()
     {
         \Lib\Util::clearMessages();
         $this->assertCount( 0, \Lib\Util::getMessages() );
     }
 
+    /**
+     * @group library
+     * @group util
+     */
     public function testAddMessage()
     {
         \Lib\Util::addMessage( 'test message', SUCCESS );
         $this->assertCount( 1, \Lib\Util::getMessages() );
     }
 
+    /**
+     * @group library
+     * @group util
+     */
     public function testBenchmarks()
     {
         \Lib\Util::startBenchmark();

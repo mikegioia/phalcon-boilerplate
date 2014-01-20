@@ -29,7 +29,7 @@ class Cookies extends \Phalcon\Http\Response\Cookies
     {
         return ( isset( $this->jar[ $name ] ) )
             ? $this->jar[ $name ]
-            : NULL;
+            : new Cookie();
     }
 
     public function has( $name )
@@ -54,7 +54,14 @@ class Cookie extends \Lib\Mocks\Cookies
     public $domain;
     public $httpOnly;
 
-    public function __construct( $name, $value, $expire, $path, $secure, $domain, $httpOnly )
+    public function __construct(
+        $name = '',
+        $value = '',
+        $expire = '',
+        $path = '/',
+        $secure = FALSE,
+        $domain = '',
+        $httpOnly = FALSE )
     {
         $this->name = $name;
         $this->value = $value;

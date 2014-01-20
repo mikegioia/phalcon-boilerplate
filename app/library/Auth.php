@@ -11,6 +11,7 @@ class Auth extends \Base\Library
 {
     public static $userId;
     public static $user;
+    public static $userObj; // full user object from database
 
     /**
      * Sets up the session data, builds the user info
@@ -36,7 +37,14 @@ class Auth extends \Base\Library
         // load user, roles, and settings. if the requested userId is the
         // same as the session, then just use the session user.
         //
-        self::load();
+        self::load( self::$userId );
+    }
+
+    public static function destroy()
+    {
+        self::$user = NULL;
+        self::$userId = NULL;
+        self::$userObj = NULL;
     }
 
     public static function isLoggedIn()
@@ -49,19 +57,14 @@ class Auth extends \Base\Library
         return self::$userId;
     }
 
-    public static function setUserId( $userId )
-    {
-        self::$userId = $userId;
-    }
-
     public static function getUser()
     {
         return self::$user;
     }
 
-    public static function setUser( $user )
+    public static function getUserObj()
     {
-        self::$user = $user;
+        return self::$userObj;
     }
 
     /**
@@ -70,13 +73,8 @@ class Auth extends \Base\Library
      *
      * @param integer $userId
      */
-    public static function load( $userId = NULL )
+    public static function load( $userId )
     {
-        if ( ! $userId )
-        {
-            $userId = self::getUserId();
-        }
-
         if ( ! valid( $userId ) )
         {
             throw new \Base\Exception(
@@ -93,15 +91,8 @@ class Auth extends \Base\Library
      */
     private static function loadUser( $userId )
     {
-        if ( int_eq( $userId, self::getUserId() ) )
-        {
-            self::$user = self::getService( 'session' )->get( 'user' );
-        }
-        else
-        {
-            self::$user = \Db\Sql\Users::find( $userId )
-                ->getFirst()
-                ->toArray();
-        }
+        self::$userObj = \Db\Sql\Users::findFirst( $userId );
+        self::$user = self::$userObj->toArray();
+        self::$userId = self::$userObj->id;
     }
 }

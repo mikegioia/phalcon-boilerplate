@@ -10,6 +10,9 @@ use Phalcon\Loader,
 
 use Lib\Auth;
 
+// set up all default phalcon services. to initialize a raw
+// DI object, call $di = new Phalcon\DI();
+//
 $di = new FactoryDefault();
 
 // set config in the container
