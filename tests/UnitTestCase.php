@@ -7,18 +7,16 @@ abstract class UnitTestCase extends PhalconTestCase
 {
     protected function setUp()
     {
-        $di = DI::getDefault();
-
-        // override the cookie service
+        // create a new DI container
         //
-        $di->setShared(
-            'cookies',
-            function() {
-                $cookies = new \Lib\Mocks\Cookies();
-                $cookies->useEncryption( FALSE );
-                return $cookies;
-            });
+        $bootstrap = new \Lib\Bootstrap\Unit(
+            array(
+                'url', 'cookies', 'session', 'profiler', 'db',
+                'mongo', 'collectionManager', 'dataCache',
+                'util', 'auth', 'validate', 'cache'
+            ));
+        $bootstrap->run();
 
-        parent::setUp( $di );
+        parent::setUp( $bootstrap->getDI() );
     }
 }

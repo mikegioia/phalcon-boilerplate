@@ -15,7 +15,7 @@ class CacheTest extends \UnitTestCase
      */
     public function testGetSet()
     {
-        $test = \Lib\Cache::getSet(
+        $test = $this->di->get( 'cache' )->getSet(
             'test',
             function () {
                 return 'works';

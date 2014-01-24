@@ -1,6 +1,6 @@
 <?php
 
-namespace Lib;
+namespace Lib\Services;
 
 use Phalcon\Validation,
     Phalcon\Validation\Validator\PresenceOf,
@@ -9,10 +9,12 @@ use Phalcon\Validation,
 
 /**
  * Validation library
+ *
+ * @depends service util
  */
-class Validate extends \Base\Library
+class Validate extends \Base\Service
 {
-    private static $validation;
+    protected $validation;
 
     /**
      * Add the selected key against the tests. Tests take the form:
@@ -21,9 +23,9 @@ class Validate extends \Base\Library
      */
     public function add( $key, $tests )
     {
-        if ( self::$validation === NULL )
+        if ( $this->validation === NULL )
         {
-            self::$validation = new Validation();
+            $this->validation = new Validation();
         }
 
         foreach ( $tests as $test => $params )
@@ -63,7 +65,7 @@ class Validate extends \Base\Library
                 throw new \Base\Exception( 'Invalid validation test: '. $test );
             }
 
-            self::$validation
+            $this->validation
                 ->add( $key, $testObj )
                 ->setFilters( $key, 'trim' );
         }
@@ -73,13 +75,13 @@ class Validate extends \Base\Library
 
     public function run( $params )
     {
-        if ( is_null( self::$validation ) )
+        if ( is_null( $this->validation ) )
         {
             return FALSE;
         }
 
-        $messages = self::$validation->validate( $params );
-        self::$validation = NULL;
+        $messages = $this->validation->validate( $params );
+        $this->validation = NULL;
 
         if ( ! count( $messages ) )
         {
@@ -90,7 +92,10 @@ class Validate extends \Base\Library
         //
         foreach ( $messages as $message )
         {
-            \Lib\Util::addMessage( $message->getMessage(), ERROR );
+            $this->getDI()->getShared( 'util' )
+                ->addMessage(
+                    $message->getMessage(),
+                    ERROR );
         }
 
         return FALSE;

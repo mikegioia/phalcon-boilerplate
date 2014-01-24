@@ -15,29 +15,30 @@ class ValidateTest extends \UnitTestCase
      */
     public function testEmail()
     {
+        $validate = $this->di->get( 'validate' );
+        $util = $this->di->get( 'util' );
         $params = array(
             'email' => 'not an email' );
-        \Lib\Validate::add(
+        $validate->add(
             'email',
             array(
                 'email' => array()
             ));
 
-        \Lib\Util::clearMessages();
-        $this->assertFalse( \Lib\Validate::run( $params ) );
-        $this->assertCount( 1, \Lib\Util::getMessages() );
+        $this->assertFalse( $validate->run( $params ) );
+        $this->assertCount( 1, $util->getMessages() );
 
         $params = array(
             'email' => 'test@example.org' );
-        \Lib\Validate::add(
+        $validate->add(
             'email',
             array(
                 'email' => array()
             ));
 
-        \Lib\Util::clearMessages();
-        $this->assertTrue( \Lib\Validate::run( $params ) );
-        $this->assertCount( 0, \Lib\Util::getMessages() );
+        $util->clearMessages();
+        $this->assertTrue( $validate->run( $params ) );
+        $this->assertCount( 0, $util->getMessages() );
     }
 
     /**
@@ -46,27 +47,28 @@ class ValidateTest extends \UnitTestCase
      */
     public function testExists()
     {
+        $validate = $this->di->get( 'validate' );
+        $util = $this->di->get( 'util' );
         $params = array(
             'password' => 'password' );
-        \Lib\Validate::add(
+        $validate->add(
             'missing',
             array(
                 'exists' => array()
             ));
 
-        \Lib\Util::clearMessages();
-        $this->assertFalse( \Lib\Validate::run( $params ) );
-        $this->assertCount( 1, \Lib\Util::getMessages() );
+        $this->assertFalse( $validate->run( $params ) );
+        $this->assertCount( 1, $util->getMessages() );
 
-        \Lib\Validate::add(
+        $validate->add(
             'password',
             array(
                 'exists' => array()
             ));
 
-        \Lib\Util::clearMessages();
-        $this->assertTrue( \Lib\Validate::run( $params ) );
-        $this->assertCount( 0, \Lib\Util::getMessages() );
+        $util->clearMessages();
+        $this->assertTrue( $validate->run( $params ) );
+        $this->assertCount( 0, $util->getMessages() );
     }
 
     /**
@@ -75,31 +77,32 @@ class ValidateTest extends \UnitTestCase
      */
     public function testLength()
     {
+        $validate = $this->di->get( 'validate' );
+        $util = $this->di->get( 'util' );
         $params = array(
             'password' => 'abc' );
-        \Lib\Validate::add(
+        $validate->add(
             'password',
             array(
                 'length' => array(
                     'min' => 6 )
             ));
 
-        \Lib\Util::clearMessages();
-        $this->assertFalse( \Lib\Validate::run( $params ) );
-        $this->assertCount( 1, \Lib\Util::getMessages() );
+        $this->assertFalse( $validate->run( $params ) );
+        $this->assertCount( 1, $util->getMessages() );
 
         $params = array(
             'password' => 'password1234' );
-        \Lib\Validate::add(
+        $validate->add(
             'password',
             array(
                 'length' => array(
                     'min' => 6 )
             ));
 
-        \Lib\Util::clearMessages();
-        $this->assertTrue( \Lib\Validate::run( $params ) );
-        $this->assertCount( 0, \Lib\Util::getMessages() );
+        $util->clearMessages();
+        $this->assertTrue( $validate->run( $params ) );
+        $this->assertCount( 0, $util->getMessages() );
     }
 
     /**
@@ -108,9 +111,11 @@ class ValidateTest extends \UnitTestCase
      */
     public function testInvalidType()
     {
+        $validate = $this->di->get( 'validate' );
+
         try
         {
-            \Lib\Validate::add(
+            $validate->add(
                 'test',
                 array(
                     'missing' => array()

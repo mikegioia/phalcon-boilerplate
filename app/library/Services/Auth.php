@@ -1,32 +1,36 @@
 <?php
 
-namespace Lib;
+namespace Lib\Services;
 
 use Db\Sql\Users;
 
 /**
  * Manages identity authentication and permissions in Phoenix
+ *
+* @depends service session
  */
-class Auth extends \Base\Library
+class Auth extends \Base\Service
 {
-    public static $userId;
-    public static $user;
-    public static $userObj; // full user object from database
+    public $userId;
+    public $user;
+    public $userObj; // full user object from database
 
     /**
      * Sets up the session data, builds the user info
      */
-    public static function init()
+    public function init()
     {
         // save the userId from the session
         //
-        self::$userId = self::getService( 'session' )->get( 'user_id' );
+        $this->userId = $this->getDI()
+            ->getShared( 'session' )
+            ->get( 'user_id' );
 
         // read in the session. if it's not set, try to re-authorize them
         // with a login token. authorizeToken will set the session info
         // if a valid token exists.
         //
-        if ( ! self::isLoggedIn() )
+        if ( ! $this->isLoggedIn() )
         {
             if ( ! \Actions\Users\Auth::authorizeToken() )
             {
@@ -37,34 +41,34 @@ class Auth extends \Base\Library
         // load user, roles, and settings. if the requested userId is the
         // same as the session, then just use the session user.
         //
-        self::load( self::$userId );
+        $this->load( $this->userId );
     }
 
-    public static function destroy()
+    public function destroy()
     {
-        self::$user = NULL;
-        self::$userId = NULL;
-        self::$userObj = NULL;
+        $this->user = NULL;
+        $this->userId = NULL;
+        $this->userObj = NULL;
     }
 
-    public static function isLoggedIn()
+    public function isLoggedIn()
     {
-        return valid( self::getUserId() );
+        return valid( $this->getUserId() );
     }
 
-    public static function getUserId()
+    public function getUserId()
     {
-        return self::$userId;
+        return $this->userId;
     }
 
-    public static function getUser()
+    public function getUser()
     {
-        return self::$user;
+        return $this->user;
     }
 
-    public static function getUserObj()
+    public function getUserObj()
     {
-        return self::$userObj;
+        return $this->userObj;
     }
 
     /**
@@ -73,7 +77,7 @@ class Auth extends \Base\Library
      *
      * @param integer $userId
      */
-    public static function load( $userId )
+    public function load( $userId )
     {
         if ( ! valid( $userId ) )
         {
@@ -81,7 +85,7 @@ class Auth extends \Base\Library
                 'No user ID specified or exists in the session' );
         }
 
-        self::loadUser( $userId );
+        $this->loadUser( $userId );
     }
 
     /**
@@ -89,10 +93,10 @@ class Auth extends \Base\Library
      *
      * @param integer $userId
      */
-    private static function loadUser( $userId )
+    private function loadUser( $userId )
     {
-        self::$userObj = \Db\Sql\Users::findFirst( $userId );
-        self::$user = self::$userObj->toArray();
-        self::$userId = self::$userObj->id;
+        $this->userObj = \Db\Sql\Users::findFirst( $userId );
+        $this->user = $this->userObj->toArray();
+        $this->userId = $this->userObj->id;
     }
 }

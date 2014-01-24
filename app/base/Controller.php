@@ -47,13 +47,15 @@ class Controller extends \Phalcon\Mvc\Controller
      */
     public function afterExecuteRoute()
     {
+        $util = $this->getDI()->getShared( 'util' );
+
         // pull stored messages and stop the benchmarks
         //
         $this->messages = array_merge(
             $this->messages,
-            \Lib\Util::getMessages() );
+            $util->getMessages() );
 
-        \Lib\Util::stopBenchmark();
+        $util->stopBenchmark();
 
         // if we're in API mode, send a JSON response. otherwise
         // save the messages to the flashdata and optionally redirect
@@ -71,7 +73,7 @@ class Controller extends \Phalcon\Mvc\Controller
             //
             if ( $this->config->profiling->system )
             {
-                $response[ 'debug' ] = \Lib\Util::getDebugInfo();
+                $response[ 'debug' ] = $util->getDebugInfo();
             }
 
             // set the json headers and store our response in the view
@@ -83,7 +85,7 @@ class Controller extends \Phalcon\Mvc\Controller
         }
         else
         {
-            \Lib\Util::setFlash( $this->messages );
+            $util->setFlash( $this->messages );
 
             if ( ! is_null( $this->redirect ) )
             {
@@ -91,14 +93,16 @@ class Controller extends \Phalcon\Mvc\Controller
             }
             else
             {
-                $this->view->flashMessages = \Lib\Util::getFlash();
+                $this->view->flashMessages = $util->getFlash();
             }
         }
     }
 
     public function checkLoggedIn()
     {
-        if ( ! \Lib\Auth::isLoggedIn() )
+        $auth = $this->getDI()->getShared( 'auth' );
+
+        if ( ! $auth->isLoggedIn() )
         {
             if ( $this->responseMode === 'api' )
             {

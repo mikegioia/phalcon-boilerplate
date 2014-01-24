@@ -23,7 +23,8 @@ class AuthController extends \Base\Controller
         // try to log in with credentials
         //
         $this->redirect = 'dashboard';
-        $loggedIn = \Actions\Users\Auth::login(
+        $action = new \Actions\Users\Auth();
+        $loggedIn = $action->login(
             array(
                 'email' => $email,
                 'password' => $password
@@ -40,7 +41,8 @@ class AuthController extends \Base\Controller
      */
     public function logoutAction()
     {
-        \Actions\Users\Auth::destroyToken();
+        $action = new \Actions\Users\Auth();
+        $action->destroyToken();
 
         $this->redirect = 'login';
         $this->addMessage( "You've been logged out" ); 

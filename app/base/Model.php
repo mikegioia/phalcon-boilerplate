@@ -13,9 +13,7 @@ class Model extends \Phalcon\Mvc\Model
      */
     public function getService( $service )
     {
-        $func = "get". ucfirst( $service );
-
-        return DI::getDefault()->$func();
+        return $this->getDI()->get( $service );
     }
 
     /**

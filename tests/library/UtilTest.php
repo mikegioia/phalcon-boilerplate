@@ -15,8 +15,7 @@ class UtilTest extends \UnitTestCase
      */
     public function testRemoveMessage()
     {
-        \Lib\Util::clearMessages();
-        $this->assertCount( 0, \Lib\Util::getMessages() );
+        $this->assertCount( 0, $this->di->get( 'util' )->getMessages() );
     }
 
     /**
@@ -25,8 +24,9 @@ class UtilTest extends \UnitTestCase
      */
     public function testAddMessage()
     {
-        \Lib\Util::addMessage( 'test message', SUCCESS );
-        $this->assertCount( 1, \Lib\Util::getMessages() );
+        $util = $this->di->get( 'util' );
+        $util->addMessage( 'test message', SUCCESS );
+        $this->assertCount( 1, $util->getMessages() );
     }
 
     /**
@@ -35,10 +35,11 @@ class UtilTest extends \UnitTestCase
      */
     public function testBenchmarks()
     {
-        \Lib\Util::startBenchmark();
+        $util = $this->di->get( 'util' );
+        $util->startBenchmark();
         usleep( 25 );
-        \Lib\Util::stopBenchmark();
-        $debugInfo = \Lib\Util::getDebugInfo();
+        $util->stopBenchmark();
+        $debugInfo = $util->getDebugInfo();
 
         $this->assertCount( 8, $debugInfo );
         $this->assertArrayHasKey( 'memory', $debugInfo );
@@ -46,8 +47,8 @@ class UtilTest extends \UnitTestCase
         $this->assertGreaterThan( 0, $debugInfo[ 'memory' ] );
         $this->assertGreaterThan( 0, $debugInfo[ 'time' ] );
 
-        \Lib\Util::resetBenchmarks();
-        $debugInfo = \Lib\Util::getDebugInfo();
+        $util->resetBenchmarks();
+        $debugInfo = $util->getDebugInfo();
 
         $this->assertEquals( 0, $debugInfo[ 'memory' ] );
         $this->assertEquals( 0, $debugInfo[ 'time' ] );

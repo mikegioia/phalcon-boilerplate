@@ -1,11 +1,13 @@
 <?php
 
-namespace Lib;
+namespace Lib\Services;
 
 /**
  * Internal cache management service
+ *
+ * @depends service dataCache
  */
-class Cache extends \Base\Library
+class Cache extends \Base\Service
 {
     /**
      * Return the data if the key exists. if not, run the callback and
@@ -16,9 +18,9 @@ class Cache extends \Base\Library
      * @param int $lifetime
      * @return mixed
      */
-    public static function getSet( $keyName, $callback = NULL, $lifetime = NULL )
+    public function getSet( $keyName, $callback = NULL, $lifetime = NULL )
     {
-        $cache = self::getService( 'cache' );
+        $cache = $this->getDI()->getShared( 'dataCache' );
 
         if ( $cache->exists( $keyName ) )
         {

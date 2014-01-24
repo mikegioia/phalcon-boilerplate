@@ -9,20 +9,13 @@ class AuthTest extends \UnitTestCase
         parent::setUp();
     }
 
-    protected function tearDown()
-    {
-        // log out after every function
-        //
-        \Lib\Auth::destroy();
-    }
-
     /**
      * @group library
      * @group auth
      */
     public function testInit()
     {
-        $this->assertFalse( \Lib\Auth::init() );
+        $this->assertFalse( $this->di->get( 'auth' )->init() );
     }
 
     /**
@@ -33,7 +26,7 @@ class AuthTest extends \UnitTestCase
     {
         try
         {
-            \Lib\Auth::load( NULL );
+            $this->di->get( 'auth' )->load( NULL );
         }
         catch ( \Base\Exception $expected )
         {
@@ -49,8 +42,9 @@ class AuthTest extends \UnitTestCase
      */
     public function testManualLoading()
     {
-        \Lib\Auth::load( 1 );
+        $auth = $this->di->get( 'auth' );
+        $auth->load( 1 );
 
-        $this->assertTrue( is_array( \Lib\Auth::getUser() ) );
+        $this->assertTrue( is_array( $auth->getUser() ) );
     }
 }

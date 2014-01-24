@@ -9,35 +9,17 @@ define( 'VENDOR_PATH', __DIR__ . '/..vendor' );
 set_include_path(
     ROOT_PATH . PATH_SEPARATOR . get_include_path() );
 
-// required for phalcon/incubator
+// vendor autoload
 //
-include __DIR__ . "/../vendor/autoload.php";
+include ROOT_PATH . "/../vendor/autoload.php";
 
-// bootstrap our application
+// app constants and functions (global)
 //
-$config = new \Phalcon\Config\Adapter\Ini(
-    APP_PATH . '/config/config.ini' );
-$localConfig = new \Phalcon\Config\Adapter\Ini(
-    APP_PATH . '/config/config.local.ini' );
-$config->merge( $localConfig );
+include APP_PATH . '/etc/constants.php';
+include APP_PATH . '/etc/helpers.php';
 
-include APP_PATH . '/config/loader.php';
-include APP_PATH . '/config/services.php';
-include APP_PATH . '/config/constants.php';
-include APP_PATH . '/config/helpers.php';
-
-// use the application autoloader to autoload the classes
-// autoload the dependencies found in composer
+// bootstrap and unit test classes
 //
-$loader->registerDirs(
-    array(
-        ROOT_PATH
-    ))->register();
-
-// start the session
-//
-if ( ! $di->getSession()->isStarted() ):
-    $di->getSession()->start();
-endif;
-
-\Phalcon\DI::setDefault( $di );
+include APP_PATH . '/library/Bootstrap/Base.php';
+include APP_PATH . '/library/Bootstrap/Unit.php';
+include ROOT_PATH . "/UnitTestCase.php";

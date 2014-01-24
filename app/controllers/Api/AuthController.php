@@ -23,7 +23,8 @@ class AuthController extends \Base\Controller
 
         // try to log in with credentials
         //
-        $loggedIn = \Actions\Users\Auth::login(
+        $action = new \Actions\Users\Auth();
+        $loggedIn = $action->login(
             array(
                 'email' => $email,
                 'password' => $password
@@ -35,7 +36,7 @@ class AuthController extends \Base\Controller
             return FALSE;
         }
 
-        $this->data->user_id = \Lib\Auth::getUserId();
+        $this->data->user_id = $this->auth->getUserId();
         $this->data->session_id = $this->session->getId();
     }
 
@@ -44,8 +45,9 @@ class AuthController extends \Base\Controller
      */
     public function logoutAction()
     {
-        \Actions\Users\Auth::destroyToken();
-        \Actions\Users\Auth::destroySession();
+        $action = new \Actions\Users\Auth();
+        $action->destroyToken();
+        $action->destroySession();
 
         $this->cookies->get( 'token' )->delete();
         $this->addMessage( "You've been logged out" ); 

@@ -11,28 +11,29 @@ class Auth extends \Base\Action
      * @param array $params
      * @return bool
      */
-    public static function login( $params )
+    public function login( $params )
     {
-        \Lib\Validate::add(
+        $validate = $this->getService( 'validate' );
+        $validate->add(
             'email',
             array(
                 'exists' => array(),
                 'email' => array()
             ));
-        \Lib\Validate::add(
+        $validate->add(
             'password',
             array(
                 'exists' => array()
             ));
 
-        if ( ! \Lib\Validate::run( $params ) )
+        if ( ! $validate->run( $params ) )
         {
             return FALSE;
         }
 
         // authorize the email/password combo
         //
-        $user = self::authorizeLogin(
+        $user = $this->authorizeLogin(
             $params[ 'email' ],
             $params[ 'password' ] );
 
@@ -43,10 +44,8 @@ class Auth extends \Base\Action
 
         // save the session data
         //
-        $session = self::getService( 'session' );
-        $session->set( 'user_id', $user->id );
-
-        \Lib\Auth::load( $user->id );
+        $this->getService( 'session' )->set( 'user_id', $user->id );
+        $this->getService( 'auth' )->load( $user->id );
 
         // write out the cookie token
         //
@@ -60,27 +59,28 @@ class Auth extends \Base\Action
      * @param string $password
      * @return object | bool
      */
-    public static function authorizeLogin( $email, $password )
+    public function authorizeLogin( $email, $password )
     {
         // check if the email exists
         //
+        $util = $this->getService( 'util' );
         $user = \Db\Sql\Users::findByEmail( $email )->getFirst();
 
         if ( ! $user
             || ! valid( $user->email, STRING ) )
         {
-            \Lib\Util::addMessage( 'Email and password do not match', ERROR );
+            $util->addMessage( 'Email and password do not match', ERROR );
             return FALSE;
         }
 
         // hash the plaintext password and compare it against the
         // database password.
         //
-        $security = self::getService( 'security' );
+        $security = $this->getService( 'security' );
 
         if ( ! $security->checkHash( $password, $user->password ) )
         {
-            \Lib\Util::addMessage( 'Email and password do not match', ERROR );
+            $util->addMessage( 'Email and password do not match', ERROR );
             return FALSE;
         }
 
@@ -92,9 +92,9 @@ class Auth extends \Base\Action
      *
      * @return object | bool
      */
-    public static function authorizeToken()
+    public function authorizeToken()
     {
-        $cookies = self::getService( 'cookies' );
+        $cookies = $this->getService( 'cookies' );
 
         // read the cookie, check if the token belongs to a user
         //
@@ -121,7 +121,7 @@ class Auth extends \Base\Action
 
         // save the session data
         //
-        $session = self::getService( 'session' );
+        $session = $this->getService( 'session' );
         $session->set( 'user_id', $user->id );
 
         return $user;
@@ -135,14 +135,15 @@ class Auth extends \Base\Action
      * @param bool $returnToken
      * @return bool | string
      */
-    public static function createToken( $userId, $returnToken = FALSE )
+    public function createToken( $userId, $returnToken = FALSE )
     {
-        $token = self::generateRandomToken();
-        $cookies = self::getService( 'cookies' );
-        $config = self::getService( 'config' );
+        $config = $this->getService( 'config' );
+        $cookies = $this->getService( 'cookies' );
+        $util = $this->getService( 'util' );
 
         // set the cookie
         //
+        $token = $this->generateRandomToken();
         $cookieSet = $cookies->set(
             'token',
             $token,
@@ -154,7 +155,7 @@ class Auth extends \Base\Action
 
         if ( ! $cookieSet )
         {
-            \Lib\Util::addMessage( 'Failed to save login cookie', ERROR );
+            $util->addMessage( 'Failed to save login cookie', ERROR );
             return FALSE;
         }
 
@@ -171,7 +172,7 @@ class Auth extends \Base\Action
 
         if ( ! $settingSaved )
         {
-            \Lib\Util::addMessage( 'Failed to save login token', ERROR );
+            $util->addMessage( 'Failed to save login token', ERROR );
             return FALSE;
         }
 
@@ -186,11 +187,13 @@ class Auth extends \Base\Action
      * @param integer $userId
      * @return bool
      */
-    public static function destroyToken( $userId = NULL )
+    public function destroyToken( $userId = NULL )
     {
-        $config = self::getService( 'config' );
-        $cookies = self::getService( 'cookies' );
-        $userId = ( $userId ) ? $userId : \Lib\Auth::getUserId();
+        $config = $this->getService( 'config' );
+        $cookies = $this->getService( 'cookies' );
+        $auth = $this->getService( 'auth' );
+
+        $userId = ( $userId ) ? $userId : $auth->getUserId();
         $setting = \Db\Sql\Settings::get(
             $userId,
             'user',
@@ -209,12 +212,13 @@ class Auth extends \Base\Action
      *
      * @return bool
      */
-    public static function destroySession()
+    public function destroySession()
     {
-        $session = self::getService( 'session' );
+        $session = $this->getService( 'session' );
         $session->remove( 'user_id' );
 
-        \Lib\Auth::destroy();
+        $auth = $this->getService( 'auth' );
+        $auth->destroy();
 
         return $session->destroy();
     }
@@ -225,7 +229,7 @@ class Auth extends \Base\Action
      * @param integer $length
      * @return string
      */
-    public static function generateRandomToken( $length = 40 )
+    public function generateRandomToken( $length = 40 )
     {
         $token = "";
         $code_alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -235,7 +239,7 @@ class Auth extends \Base\Action
 
         for( $i = 0; $i < $length; $i++ )
         {
-            $token .= $code_alphabet[ self::cryptoRandSecure( 0, $alphabet_length ) ];
+            $token .= $code_alphabet[ $this->cryptoRandSecure( 0, $alphabet_length ) ];
         }
 
         return $token;
@@ -248,7 +252,7 @@ class Auth extends \Base\Action
      * @param integer $max
      * @return long
      */
-    public static function cryptoRandSecure( $min, $max ) 
+    public function cryptoRandSecure( $min, $max ) 
     {
         $range = $max - $min;
 

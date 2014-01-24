@@ -2,7 +2,7 @@
 
 namespace Base;
 
-class Action extends \Phalcon\Mvc\User\Component
+class Service extends \Phalcon\Mvc\User\Component
 {
     public function getService( $service )
     {

@@ -13,6 +13,6 @@ class DashboardController extends \Base\Controller
 
     public function indexAction()
     {
-        $this->data->user = \Lib\Auth::getUser();
+        $this->data->user = $this->auth->getUser();
     }
 }
