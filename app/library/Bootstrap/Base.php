@@ -41,8 +41,6 @@ abstract class Base
 
     /**
      * Bootstraps the application.
-     *
-     * @return \Phalcon\DI
      */
     public function run()
     {
@@ -60,6 +58,9 @@ abstract class Base
         \Phalcon\DI::setDefault( $this->di );
     }
 
+    /**
+     * Get the internal DI object
+     */
     public function getDI()
     {
         return $this->di;
