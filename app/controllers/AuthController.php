@@ -43,8 +43,11 @@ class AuthController extends \Base\Controller
     {
         $action = new \Actions\Users\Auth();
         $action->destroyToken();
+        $action->destroySession( FALSE );
+
+        $this->cookies->get( 'token' )->delete();
 
         $this->redirect = 'login';
-        $this->addMessage( "You've been logged out" ); 
+        $this->addMessage( "You've been logged out" );
     }
 }

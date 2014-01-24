@@ -212,7 +212,7 @@ class Auth extends \Base\Action
      *
      * @return bool
      */
-    public function destroySession()
+    public function destroySession( $purge = TRUE )
     {
         $session = $this->getService( 'session' );
         $session->remove( 'user_id' );
@@ -220,7 +220,9 @@ class Auth extends \Base\Action
         $auth = $this->getService( 'auth' );
         $auth->destroy();
 
-        return $session->destroy();
+        return ( $purge )
+            ? $session->destroy()
+            : TRUE;
     }
 
     /**

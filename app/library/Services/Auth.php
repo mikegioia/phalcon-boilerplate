@@ -32,7 +32,9 @@ class Auth extends \Base\Service
         //
         if ( ! $this->isLoggedIn() )
         {
-            if ( ! \Actions\Users\Auth::authorizeToken() )
+            $action = new \Actions\Users\Auth();
+
+            if ( ! $action->authorizeToken() )
             {
                 return FALSE;
             }
