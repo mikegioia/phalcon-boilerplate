@@ -76,11 +76,12 @@ class Controller extends \Phalcon\Mvc\Controller
                 $response[ 'debug' ] = $util->getDebugInfo();
             }
 
-            // set the json headers and store our response in the view
-            //
             $this->view->disable();
-            $this->response->setHeader( 'Content-Type', 'application/json' );
-            $this->response->setContent( json_encode( $response ) );
+
+            // set the json headers and store our response in the view
+            $this->response->resetHeaders();
+            $this->response->setContentType('application/json');
+            $this->response->setJsonContent($response);
             $this->response->send();
         }
         else
