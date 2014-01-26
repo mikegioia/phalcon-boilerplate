@@ -2,16 +2,16 @@
 
 This short document will show you how to get the code working.
 For a more detailed explanation and documentation visit
-[the article series at ParticleBits][1].
+[the article series at ParticleBits][1] (@todo).
 
 ## Step 1: Update your local config file(s)
 
-Navigate to `app/config/env` and update the config files. To get
-started you only need to update the local.ini file. Feel free to
+Navigate to `app/etc/env` and update the config files. To get
+started you only need to update the local.php file. Feel free to
 add/remove/rename any file in this directory. The config files
-in here are environment specific and extend the ini settings in
-`app/config/config.ini`. You'll probably need to update the paths
-and MySQL config at a minimum. Make sure the paths.hostname is
+in here are environment specific and extend the config settings in
+`app/etc/config.php`. You'll probably need to update the paths
+and MySQL config at a minimum. Make sure the paths->hostname is
 **without** the http://.
 
 ## Step 2: Run the install script
@@ -22,7 +22,7 @@ Open a terminal, navigate to the `deploy` directory, and run:
 
 where `<profile>` is the name of the config file for the current
 environment (local, development, production, etc.). This will
-copy the environment config file to `app/config/config.local.ini`.
+copy the environment config file to `app/etc/config.local.php`.
 
 ## Step 3: Run the SQL update script
 
