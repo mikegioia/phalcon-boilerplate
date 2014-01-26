@@ -79,9 +79,10 @@ class Controller extends \Phalcon\Mvc\Controller
             $this->view->disable();
 
             // set the json headers and store our response in the view
+            //
             $this->response->resetHeaders();
-            $this->response->setContentType('application/json');
-            $this->response->setJsonContent($response);
+            $this->response->setContentType( 'application/json' );
+            $this->response->setJsonContent( $response );
             $this->response->send();
         }
         else
