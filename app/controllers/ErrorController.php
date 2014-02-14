@@ -8,7 +8,7 @@ class ErrorController extends \Base\Controller
     {
         $this->checkLoggedIn = FALSE;
 
-        parent::beforeExecuteRoute();
+        return parent::beforeExecuteRoute();
     }
 
     public function show404Action( $responseMode = '' )

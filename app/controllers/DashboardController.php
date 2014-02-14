@@ -6,7 +6,7 @@ class DashboardController extends \Base\Controller
 {
     public function beforeExecuteRoute()
     {
-        parent::beforeExecuteRoute();
+        return parent::beforeExecuteRoute();
     }
 
     public function indexAction()

@@ -8,7 +8,7 @@ class LoginController extends \Base\Controller
     {
         $this->checkLoggedIn = FALSE;
 
-        parent::beforeExecuteRoute();
+        return parent::beforeExecuteRoute();
     }
 
     public function indexAction()

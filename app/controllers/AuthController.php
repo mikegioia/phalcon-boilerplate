@@ -8,7 +8,7 @@ class AuthController extends \Base\Controller
     {
         $this->checkLoggedIn = FALSE;
 
-        parent::beforeExecuteRoute();
+        return parent::beforeExecuteRoute();
     }
 
     /**

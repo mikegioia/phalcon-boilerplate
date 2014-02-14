@@ -37,6 +37,8 @@ class Controller extends \Phalcon\Mvc\Controller
         {
             return $this->checkLoggedIn();
         }
+
+        return TRUE;
     }
 
     /**
@@ -118,7 +120,8 @@ class Controller extends \Phalcon\Mvc\Controller
             }
             else
             {
-                return $this->response->redirect( 'login' );
+                $this->response->redirect( 'login' );
+                return FALSE;
             }
         }
 
