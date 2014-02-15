@@ -4,6 +4,12 @@ namespace Db\Sql;
 
 class Users extends \Base\Model
 {
+    public $id;
+    public $email;
+    public $password;
+    public $name;
+    public $created_at;
+
     function initialize()
     {
         $this->setSource( 'users' );

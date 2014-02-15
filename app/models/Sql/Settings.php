@@ -4,6 +4,12 @@ namespace Db\Sql;
 
 class Settings extends \Base\Model
 {
+    public $object_id;
+    public $object_type;
+    public $key;
+    public $value;
+    public $created_at;
+
     function initialize()
     {
         $this->setSource( 'settings' );
