@@ -105,7 +105,7 @@ abstract class Base
             ));
         $loader->register();
 
-        $di[ 'loader' ] = $loader;
+        $this->di[ 'loader' ] = $loader;
     }
 
     protected function initRouter()

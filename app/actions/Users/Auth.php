@@ -88,6 +88,18 @@ class Auth extends \Base\Action
     }
 
     /**
+     * Return a hashed version of a user's password
+     *
+     * @param string $password
+     */
+    public function hashPassword( $password )
+    {
+        $security = $this->getService( 'security' );
+
+        return $security->hash( $password );
+    }
+
+    /**
      * Authorize a user's login token
      *
      * @return object | bool

@@ -44,7 +44,7 @@ class Unit extends \Lib\Bootstrap\Base
             ));
         $loader->register();
 
-        $di[ 'loader' ] = $loader;
+        $this->di[ 'loader' ] = $loader;
     }
 
     protected function initCookies()
