@@ -1,11 +1,13 @@
 <?php
 
 use Phalcon\DI as DI,
-    Phalcon\Test\UnitTestCase as PhalconTestCase;
+    Phalcon\Test\UnitTestCase as PhalconTestCase,
+    Phalcon\Config,
+    Phalcon\DiInterface as DIC;
 
 abstract class UnitTestCase extends PhalconTestCase
 {
-    protected function setUp()
+    protected function setUp( DIC $di = NULL, Config $config = NULL )
     {
         // create a new DI container
         //

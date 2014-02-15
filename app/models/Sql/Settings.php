@@ -4,7 +4,7 @@ namespace Db\Sql;
 
 class Settings extends \Base\Model
 {
-    public function initialize()
+    function initialize()
     {
         $this->setSource( 'settings' );
     }
@@ -12,7 +12,7 @@ class Settings extends \Base\Model
     /**
      * Adds a timestamp
      */
-    public function beforeSave()
+    function beforeSave()
     {
         $timestamp = new \DateTime();
         $this->created_at = $timestamp->format( DATE_DATABASE );
@@ -27,7 +27,7 @@ class Settings extends \Base\Model
      * @param array $options
      * @return string
      */
-    public function get( $objId, $objType, $key = NULL, $options = array() )
+    static function get( $objId, $objType, $key = NULL, $options = array() )
     {
         $settings = \Db\Sql\Settings::query()
             ->where( 'object_id = :objId:' )
@@ -54,7 +54,7 @@ class Settings extends \Base\Model
      * @param array $options
      * @return array of Settings
      */
-    public function getByKeyValue( $key, $value, $options = array() )
+    static function getByKeyValue( $key, $value, $options = array() )
     {
         $settings = \Db\Sql\Settings::query()
             ->where( 'key = :key:' )

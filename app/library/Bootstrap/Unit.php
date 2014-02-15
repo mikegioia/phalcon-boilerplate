@@ -11,9 +11,9 @@ class Unit extends \Lib\Bootstrap\Base
         parent::__construct( $services );
     }
 
-    public function run()
+    public function run( $args = array() )
     {
-        parent::run();
+        parent::run( $args );
 
         // start the session
         //

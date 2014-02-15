@@ -13,19 +13,19 @@ class Cli extends \Lib\Bootstrap\Base
         $this->services = $services;
     }
 
-    public function run( $arguments = array() )
+    public function run( $args = array() )
     {
-        parent::run();
+        parent::run( $args );
 
         // call the task action specified
         //
-        $class = '\Tasks\\'. ucfirst( $arguments[ 'task' ] ) .'Task';
-        $action = strtolower( $arguments[ 'action' ] ) .'Action';
+        $class = '\Tasks\\'. ucfirst( $args[ 'task' ] ) .'Task';
+        $action = strtolower( $args[ 'action' ] ) .'Action';
         $task = new $class();
 
         return call_user_func_array(
             [ $task, $action ],
-            $arguments[ 'params' ] );
+            $args[ 'params' ] );
     }
 
     protected function initLoader()

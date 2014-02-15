@@ -6,11 +6,6 @@ use \Phalcon\DI as DI;
 
 class AuthTest extends \UnitTestCase
 {
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
     /**
      * @group actions
      * @group users

@@ -12,15 +12,13 @@ class Users extends \Base\Model
     /**
      * Load a user by login token, stored as a setting
      */
-    function getByToken( $token )
+    static function getByToken( $token )
     {
-        $config = self::getService( 'config' );
+        $config = self::getStaticService( 'config' );
         $setting = \Db\Sql\Settings::getByKeyValue(
             $config->settings->cookieToken,
             $token->getValue(),
-            array(
-                'first' => TRUE
-            ));
+            [ 'first' => TRUE ]);
 
         if ( ! $setting || ! valid( $setting->object_id ) )
         {

@@ -10,4 +10,9 @@ class Library extends \Phalcon\Mvc\User\Component
     {
         return $this->getDI()->get( $service );
     }
+
+    static function getStaticService( $service )
+    {
+        return DI::getDefault()->get( $service );
+    }
 }

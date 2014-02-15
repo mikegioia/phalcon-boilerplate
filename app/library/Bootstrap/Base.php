@@ -42,7 +42,7 @@ abstract class Base
     /**
      * Bootstraps the application.
      */
-    public function run()
+    public function run( $args = array() )
     {
         // initialize our required services
         //

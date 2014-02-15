@@ -11,9 +11,14 @@ class Model extends \Phalcon\Mvc\Model
     /**
      * Get the service via static call
      */
-    public function getService( $service )
+    function getService( $service )
     {
         return $this->getDI()->get( $service );
+    }
+
+    static function getStaticService( $service )
+    {
+        return DI::getDefault()->get( $service );
     }
 
     /**
@@ -21,14 +26,14 @@ class Model extends \Phalcon\Mvc\Model
      *
      * @param $behavior
      */
-    public function addBehavior( $behavior )
+    function addBehavior( $behavior )
     {
         $this->behaviors[ $behavior ] = TRUE;
     }
 
-    public function beforeSave()
+    function beforeSave()
     {
-        $di = DI::getDefault();
+        $di = $this->getDI();
 
         foreach ( $this->behaviors as $behavior => $active )
         {

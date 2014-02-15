@@ -4,11 +4,6 @@ namespace Library;
 
 class CacheTest extends \UnitTestCase
 {
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
     /**
      * @group library
      * @group cache

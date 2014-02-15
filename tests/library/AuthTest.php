@@ -4,11 +4,6 @@ namespace Library;
 
 class AuthTest extends \UnitTestCase
 {
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
     /**
      * @group library
      * @group auth

@@ -4,11 +4,6 @@ namespace Library;
 
 class ValidateTest extends \UnitTestCase
 {
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
     /**
      * @group library
      * @group validate
