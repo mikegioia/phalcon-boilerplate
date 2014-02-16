@@ -11,8 +11,12 @@ namespace Lib\Services;
 class Util extends \Base\Service
 {
     protected $messages = array();
-    protected $memory = array();
-    protected $time = array();
+    protected $memory = array(
+        'start' => 0,
+        'end' => 0 );
+    protected $time = array(
+        'start' => 0,
+        'end' => 0 );
 
     public function addMessage( $message, $type = SUCCESS )
     {

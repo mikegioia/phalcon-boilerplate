@@ -13,15 +13,7 @@ class Settings extends \Base\Model
     function initialize()
     {
         $this->setSource( 'settings' );
-    }
-
-    /**
-     * Adds a timestamp
-     */
-    function beforeSave()
-    {
-        $timestamp = new \DateTime();
-        $this->created_at = $timestamp->format( DATE_DATABASE );
+        $this->addBehavior( 'timestamp' );
     }
 
     /**

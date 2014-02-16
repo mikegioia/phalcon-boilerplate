@@ -38,6 +38,12 @@ class Auth extends \Base\Service
             {
                 return FALSE;
             }
+
+            // update the auth from the session
+            //
+            $this->userId = $this->getDI()
+                ->getShared( 'session' )
+                ->get( 'user_id' );
         }
 
         // load user, roles, and settings. if the requested userId is the

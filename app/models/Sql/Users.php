@@ -13,6 +13,7 @@ class Users extends \Base\Model
     function initialize()
     {
         $this->setSource( 'users' );
+        $this->addBehavior( 'timestamp' );
     }
 
     /**

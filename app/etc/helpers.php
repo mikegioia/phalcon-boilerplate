@@ -132,3 +132,34 @@ function human_bytes( $bytes, $precision = 2 )
         $bytes / pow( 1024, ( $i = floor( log( $bytes, 1024 ) ) ) ), $precision ).
         ' '. $unit[ $i ];
 }
+
+/**
+ * Returns a list of columns from an array of arrays
+ */
+function map( $objects, $key = 'id', $listify = FALSE )
+{
+    $mapped = \__::map(
+        $objects,
+        function ( $object ) use ( $key ) {
+            return $object[ $key ];
+        });
+
+    return ( $listify )
+        ? implode( ', ', $mapped )
+        : $mapped;
+}
+
+/**
+ * Outputs a date formatted string
+ */
+function date_str( $datetime, $format = DATE_TABLE, $nullOnEmpty = FALSE )
+{
+    if ( ! $datetime && $nullOnEmpty )
+    {
+        return NULL;
+    }
+
+    $timestamp = new \DateTime( $datetime );
+
+    return $timestamp->format( $format );
+}

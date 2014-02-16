@@ -253,6 +253,15 @@ abstract class Base
             TRUE );
     }
 
+    protected function initBehaviors()
+    {
+        $this->di->set(
+            'behavior_timestamp',
+            function () {
+                return new \Db\Behaviors\Timestamp();
+            });
+    }
+
     protected function initDataCache()
     {
         $config = $this->di[ 'config' ];
