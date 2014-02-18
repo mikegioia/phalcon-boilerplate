@@ -1,4 +1,4 @@
-app/config/config.local.ini
+app/etc/config.local.php
 composer.lock
 
 syntax: regexp
