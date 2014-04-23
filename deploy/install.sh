@@ -28,14 +28,14 @@ shift $((OPTIND - 1))
 #
 env=${1:-"local"}
 
-if [ ! -f "../app/etc/env/${env}.ini" ] ; then
+if [ ! -f "../app/etc/env/${env}.php" ] ; then
     printf "Invalid environment specified: %s\n" "$env" >&2
     exit 1
 fi
 
-if [ ! -f "../app/etc/config.local.ini" ] ; then
+if [ ! -f "../app/etc/config.local.php" ] ; then
     echo "Copying default '${env}' config file"
-    cp ../app/etc/env/${env}.ini ../app/etc/config.local.ini
+    cp ../app/etc/env/${env}.php ../app/etc/config.local.php
 else
     echo "'${env}' config file exists, skipping!"
 fi
