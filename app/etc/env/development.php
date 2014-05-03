@@ -12,5 +12,5 @@ return array(
 
     'database' => array(
         'username' => 'someuser',
-        'password' => 'somepassword'
+        'password' => '##SQLPASSWORD##'
     ));
