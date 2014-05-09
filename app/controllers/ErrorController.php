@@ -53,6 +53,32 @@ class ErrorController extends \Base\Controller
         }
     }
 
+    public function show500Action( $responseMode = '', $exception = NULL )
+    {
+        if ( $responseMode )
+        {
+            $this->responseMode = $responseMode;
+        }
+
+        if ( $this->responseMode === 'api' )
+        {
+            $this->setStatus( ERROR );
+            $this->setCode( 500 );
+
+            // for production, suppress the stack trace
+            $message = ( $this->config->app->errorReporting )
+                ? get_stack_trace( $exception )
+                : "Server error";
+            $this->addMessage( $message, ERROR );
+        }
+        else
+        {
+            $this->view->errorReporting = $this->config->app->errorReporting;
+            $this->view->exception = $exception;
+            $this->view->pick( 'errors/500' );
+        }
+    }
+
     public function quitAction( $message = '', $status = SUCCESS, $redirect = NULL, $code = NULL )
     {
         if ( valid( $message, STRING ) )

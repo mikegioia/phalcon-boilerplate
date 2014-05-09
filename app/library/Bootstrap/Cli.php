@@ -18,7 +18,6 @@ class Cli extends \Lib\Bootstrap\Base
         parent::run( $args );
 
         // call the task action specified
-        //
         $class = '\Tasks\\'. ucfirst( $args[ 'task' ] ) .'Task';
         $action = strtolower( $args[ 'action' ] ) .'Action';
         $task = new $class();
@@ -31,20 +30,18 @@ class Cli extends \Lib\Bootstrap\Base
     protected function initLoader()
     {
         $loader = new Loader();
-        $loader->registerNamespaces(
-            array(
-                'Actions' => APP_PATH .'/actions/',
-                'Base' => APP_PATH .'/base/',
-                'Controllers' => APP_PATH .'/controllers/',
-                'Db' => APP_PATH .'/models/',
-                'Lib' => APP_PATH .'/library/',
-                'Phalcon' => VENDOR_PATH .'/phalcon/incubator/Library/Phalcon/',
-                'Tasks' => CLI_PATH .'/tasks/'
-            ));
-        $loader->registerClasses(
-            array(
-                '__' => VENDOR_PATH .'/Underscore.php'
-            ));
+        $loader->registerNamespaces([
+            'Actions' => APP_PATH .'/actions/',
+            'Base' => APP_PATH .'/base/',
+            'Controllers' => APP_PATH .'/controllers/',
+            'Db' => APP_PATH .'/models/',
+            'Lib' => APP_PATH .'/library/',
+            'Phalcon' => VENDOR_PATH .'/phalcon/incubator/Library/Phalcon/',
+            'Tasks' => CLI_PATH .'/tasks/'
+        ]);
+        $loader->registerClasses([
+            '__' => VENDOR_PATH .'/Underscore.php'
+        ]);
         $loader->register();
 
         $this->di[ 'loader' ] = $loader;

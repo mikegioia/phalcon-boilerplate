@@ -163,3 +163,22 @@ function date_str( $datetime, $format = DATE_TABLE, $nullOnEmpty = FALSE )
 
     return $timestamp->format( $format );
 }
+
+/**
+ * Returns a human readable stack trace from an exception
+ */
+function get_stack_trace( $exception )
+{
+    if ( ! $exception )
+    {
+        return "";
+    }
+
+    return sprintf(
+        "%s: %s<br>%s",
+        get_class( $exception ),
+        $exception->getMessage(),
+        nl2br(
+            htmlentities( $exception->getTraceAsString() )
+        ));
+}

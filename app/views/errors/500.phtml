@@ -1,0 +1,8 @@
+<h1>There was a Problem</h1>
+<p>
+<?php   if ( $errorReporting ):
+            echo get_stack_trace( $exception );
+        else: ?>
+    The server encountered an problem.
+<?php   endif; ?>
+</p>

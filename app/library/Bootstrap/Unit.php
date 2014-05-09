@@ -16,7 +16,6 @@ class Unit extends \Lib\Bootstrap\Base
         parent::run( $args );
 
         // start the session
-        //
         if ( ! $this->di[ 'session' ]->isStarted() ):
             $this->di[ 'session' ]->start();
         endif;
@@ -25,23 +24,20 @@ class Unit extends \Lib\Bootstrap\Base
     protected function initLoader()
     {
         $loader = new Loader();
-        $loader->registerNamespaces(
-            array(
-                'Actions' => APP_PATH .'/actions/',
-                'Base' => APP_PATH .'/base/',
-                'Controllers' => APP_PATH .'/controllers/',
-                'Db' => APP_PATH .'/models/',
-                'Lib' => APP_PATH .'/library/',
-                'Phalcon' => VENDOR_PATH .'/phalcon/incubator/Library/Phalcon/'
-            ));
-        $loader->registerClasses(
-            array(
-                '__' => VENDOR_PATH .'/Underscore.php'
-            ));
-        $loader->registerDirs(
-            array(
-                ROOT_PATH
-            ));
+        $loader->registerNamespaces([
+            'Actions' => APP_PATH .'/actions/',
+            'Base' => APP_PATH .'/base/',
+            'Controllers' => APP_PATH .'/controllers/',
+            'Db' => APP_PATH .'/models/',
+            'Lib' => APP_PATH .'/library/',
+            'Phalcon' => VENDOR_PATH .'/phalcon/incubator/Library/Phalcon/'
+        ]);
+        $loader->registerClasses([
+            '__' => VENDOR_PATH .'/Underscore.php'
+        ]);
+        $loader->registerDirs([
+            ROOT_PATH
+        ]);
         $loader->register();
 
         $this->di[ 'loader' ] = $loader;

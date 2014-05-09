@@ -8,6 +8,7 @@ use Phalcon\Config as Config,
     Phalcon\DI\FactoryDefault,
     Phalcon\Mvc\Application,
     Phalcon\Mvc\Dispatcher,
+    Phalcon\Mvc\View,
     Phalcon\Mvc\Url as UrlResolver,
     Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 
@@ -72,12 +73,10 @@ abstract class Base
     protected function initConfig()
     {
         // read in config arrays
-        //
         $defaultConfig = require( APP_PATH . '/etc/config.php' );
         $localConfig = require( APP_PATH . '/etc/config.local.php' );
 
         // instantiate them into the phalcon config
-        //
         $config = new Config( $defaultConfig );
         $config->merge( $localConfig );
 
@@ -90,19 +89,17 @@ abstract class Base
     protected function initLoader()
     {
         $loader = new Loader();
-        $loader->registerNamespaces(
-            array(
-                'Actions' => APP_PATH .'/actions/',
-                'Base' => APP_PATH .'/base/',
-                'Controllers' => APP_PATH .'/controllers/',
-                'Db' => APP_PATH .'/models/',
-                'Lib' => APP_PATH .'/library/',
-                'Phalcon' => VENDOR_PATH .'/phalcon/incubator/Library/Phalcon/'
-            ));
-        $loader->registerClasses(
-            array(
-                '__' => VENDOR_PATH .'/Underscore.php'
-            ));
+        $loader->registerNamespaces([
+            'Actions' => APP_PATH .'/actions/',
+            'Base' => APP_PATH .'/base/',
+            'Controllers' => APP_PATH .'/controllers/',
+            'Db' => APP_PATH .'/models/',
+            'Lib' => APP_PATH .'/library/',
+            'Phalcon' => VENDOR_PATH .'/phalcon/incubator/Library/Phalcon/'
+        ]);
+        $loader->registerClasses([
+            '__' => VENDOR_PATH .'/Underscore.php'
+        ]);
         $loader->register();
 
         $this->di[ 'loader' ] = $loader;
@@ -116,6 +113,65 @@ abstract class Base
             'router',
             function () use ( $config ) {
                 return require APP_PATH . '/etc/routes.php';
+            },
+            TRUE );
+    }
+
+    protected function initView()
+    {
+        $config = $this->di[ 'config' ];
+
+        $this->di->set(
+            'view',
+            function () use ( $config ) {
+                $view = new View();
+                $view->setViewsDir( APP_PATH .'/views/' );
+                return $view;
+            },
+            TRUE );
+    }
+
+    protected function initDispatcher()
+    {
+        $eventsManager = $this->di[ 'eventsManager' ];
+
+        $this->di->set(
+            'dispatcher',
+            function () use ( $eventsManager ) {
+                // create the default namespace
+                $dispatcher = new Dispatcher();
+                $dispatcher->setDefaultNamespace( 'Controllers' );
+
+                // set up our error handler
+                $eventsManager->attach(
+                    'dispatch:beforeException',
+                    function ( $event, $dispatcher, $exception ) {
+                        switch ( $exception->getCode() )
+                        {
+                            case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
+                            case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
+                                $dispatcher->forward([
+                                    'namespace' => 'Controllers',
+                                    'controller' => 'error',
+                                    'action' => 'show404'
+                                    ]);
+                                return FALSE;
+                            default:
+                                $dispatcher->forward([
+                                    'namespace' => 'Controllers',
+                                    'controller' => 'error',
+                                    'action' => 'show500',
+                                    'params' => [
+                                        NULL, // responseMode
+                                        $exception ]
+                                    ]);
+                                return FALSE;
+                        }
+                    });
+
+                $dispatcher->setEventsManager( $eventsManager );
+
+                return $dispatcher;
             },
             TRUE );
     }
@@ -154,17 +210,16 @@ abstract class Base
             'session',
             function () use ( $config ) {
                 if ( $config->session->adapter === 'redis' ):
-                    $session = new \Phalcon\Session\Adapter\Redis(
-                        array(
-                            'path' => sprintf(
-                                'tcp://%s:%s?weight=1&prefix=%s',
-                                $config->redis->session->host,
-                                $config->redis->session->port,
-                                $config->redis->session->prefix ),
-                            'name' => $config->session->name,
-                            'lifetime' => $config->session->lifetime,
-                            'cookie_lifetime' => $config->session->cookieLifetime
-                        ));
+                    $session = new \Phalcon\Session\Adapter\Redis([
+                        'path' => sprintf(
+                            'tcp://%s:%s?weight=1&prefix=%s',
+                            $config->redis->session->host,
+                            $config->redis->session->port,
+                            $config->redis->session->prefix ),
+                        'name' => $config->session->name,
+                        'lifetime' => $config->session->lifetime,
+                        'cookie_lifetime' => $config->session->cookieLifetime
+                    ]);
                 else:
                     $session = new \Phalcon\Session\Adapter\Files();
                 endif;
@@ -195,21 +250,18 @@ abstract class Base
             function () use ( $config, $profiler ) {
                 // set up the database adapter
                 //
-                $adapter = new DbAdapter(
-                    array(
-                        'host' => $config->database->host,
-                        'username' => $config->database->username,
-                        'password' => $config->database->password,
-                        'dbname' => $config->database->dbname,
-                        'persistent' => $config->database->persistent
-                    ));
+                $adapter = new DbAdapter([
+                    'host' => $config->database->host,
+                    'username' => $config->database->username,
+                    'password' => $config->database->password,
+                    'dbname' => $config->database->dbname,
+                    'persistent' => $config->database->persistent
+                ]);
 
-                if ( $config->profiling->query )
-                {
+                if ( $config->profiling->query ):
                     $eventsManager = new \Phalcon\Events\Manager();
 
                     // listen to all the database events
-                    //
                     $eventsManager->attach(
                         'db',
                         function ( $event, $connection ) use ( $profiler ) {
@@ -222,7 +274,7 @@ abstract class Base
                             endif;
                         });
                     $adapter->setEventsManager( $eventsManager );
-                }
+                endif;
 
                 return $adapter;
             },
@@ -270,11 +322,9 @@ abstract class Base
             'dataCache',
             function () use ( $config ) {
                 // create a Data frontend and set a default lifetime to 1 hour
-                //
-                $frontend = new \Phalcon\Cache\Frontend\Data(
-                    array(
-                        'lifetime' => 3600
-                    ));
+                $frontend = new \Phalcon\Cache\Frontend\Data([
+                    'lifetime' => 3600
+                ]);
 
                 if ( $config->session->adapter === 'redis' ):
                     // connect to redis
@@ -287,17 +337,15 @@ abstract class Base
                     // create the cache passing the connection
                     //
                     return new \Phalcon\Cache\Backend\Redis(
-                        $frontend,
-                        array(
+                        $frontend, [
                             'redis' => $redis
-                        ));
+                        ]);
                 else:
                     return new \Phalcon\Cache\Backend\File(
-                        $frontend,
-                        array(
+                        $frontend, [
                             'cacheDir' => $config->cache->dir,
                             'prefix' => $config->cache->prefix
-                        ));
+                        ]);
                 endif;
             },
             TRUE );
@@ -306,36 +354,32 @@ abstract class Base
     protected function initUtil()
     {
         $this->di->set(
-            'util',
-            array(
-                'className' => '\Lib\Services\Util' ),
+            'util', [
+                'className' => '\Lib\Services\Util' ],
             TRUE );
     }
 
     protected function initAuth()
     {
         $this->di->set(
-            'auth',
-            array(
-                'className' => '\Lib\Services\Auth' ),
+            'auth', [
+                'className' => '\Lib\Services\Auth' ],
             TRUE );
     }
 
     protected function initCache()
     {
         $this->di->set(
-            'cache',
-            array(
-                'className' => '\Lib\Services\Cache' ),
-            TRUE ); 
+            'cache', [
+                'className' => '\Lib\Services\Cache' ],
+            TRUE );
     }
 
     protected function initValidate()
     {
         $this->di->set(
-            'validate',
-            array(
+            'validate', [
                 'className' => '\Lib\Services\Validate'
-            ));
+            ]);
     }
 }
