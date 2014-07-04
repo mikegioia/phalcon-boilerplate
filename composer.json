@@ -4,8 +4,7 @@
     "license" : "MIT",
 
     "require" : {
-        "phalcon/incubator": "dev-master",
-        "ircmaxell/password-compat": "dev-master"
+        "phalcon/incubator": "dev-master"
     },
 
     "require-dev" : {

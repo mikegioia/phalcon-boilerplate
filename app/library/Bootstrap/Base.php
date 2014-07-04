@@ -185,6 +185,7 @@ abstract class Base
             function () use ( $config ) {
                 $url = new UrlResolver();
                 $url->setBaseUri( $config->paths->baseUri );
+                $url->setStaticBaseUri( $config->paths->assetUri );
                 return $url;
             },
             TRUE );
