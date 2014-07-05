@@ -17,11 +17,6 @@ class Controller extends \Phalcon\Mvc\Controller
     protected $responseMode = NULL;
     protected $redirect = NULL;
 
-    public function initialize()
-    {
-        $this->data = new \stdClass();
-    }
-
     /**
      * Check if the user is logged in unless the controller specifically
      * requests that we don't.
@@ -31,6 +26,11 @@ class Controller extends \Phalcon\Mvc\Controller
         if ( is_null( $this->responseMode ) )
         {
             $this->responseMode = $this->config->app->responseMode;
+        }
+
+        if ( is_null( $this->data ) )
+        {
+            $this->data = new \stdClass();
         }
 
         if ( $this->checkLoggedIn )
