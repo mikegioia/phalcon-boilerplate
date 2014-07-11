@@ -20,7 +20,17 @@ class Util extends \Base\Service
 
     public function addMessage( $message, $type = SUCCESS )
     {
-        $this->messages[] = array( $type => $message );
+        if ( is_array( $message ) )
+        {
+            foreach ( $message as $m )
+            {
+                $this->messages[] = array( $type => $m );
+            }
+        }
+        else
+        {
+            $this->messages[] = array( $type => $message );
+        }
     }
 
     public function getMessages()
