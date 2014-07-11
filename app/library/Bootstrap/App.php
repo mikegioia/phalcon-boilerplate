@@ -41,13 +41,15 @@ class App extends \Lib\Bootstrap\Base
             'Base' => APP_PATH .'/base/',
             'Controllers' => APP_PATH .'/controllers/',
             'Db' => APP_PATH .'/models/',
-            'Lib' => APP_PATH .'/library/',
-            'Phalcon' => VENDOR_PATH .'/phalcon/incubator/Library/Phalcon/'
+            'Lib' => APP_PATH .'/library/'
         ]);
         $loader->registerClasses([
             '__' => VENDOR_PATH .'/Underscore.php'
         ]);
         $loader->register();
+
+        // autoload vendor dependencies
+        require_once VENDOR_PATH .'/autoload.php';
 
         $this->di[ 'loader' ] = $loader;
     }
