@@ -10,13 +10,13 @@ namespace Lib\Services;
  */
 class Util extends \Base\Service
 {
-    protected $messages = array();
-    protected $memory = array(
+    protected $messages = [];
+    protected $memory = [
         'start' => 0,
-        'end' => 0 );
-    protected $time = array(
+        'end' => 0 ];
+    protected $time = [
         'start' => 0,
-        'end' => 0 );
+        'end' => 0 ];
 
     public function addMessage( $message, $type = SUCCESS )
     {
@@ -24,12 +24,12 @@ class Util extends \Base\Service
         {
             foreach ( $message as $m )
             {
-                $this->messages[] = array( $type => $m );
+                $this->messages[] = [ $type => $m ];
             }
         }
         else
         {
-            $this->messages[] = array( $type => $message );
+            $this->messages[] = [ $type => $message ];
         }
     }
 
@@ -45,7 +45,7 @@ class Util extends \Base\Service
 
         if ( ! is_array( $flash ) )
         {
-            $flash = array();
+            $flash = [];
         }
 
         $flash = array_merge( $flash, $messages );
@@ -63,7 +63,7 @@ class Util extends \Base\Service
 
     public function clearMessages()
     {
-        $this->messages = array();
+        $this->messages = [];
     }
 
     public function startBenchmark()
@@ -80,12 +80,12 @@ class Util extends \Base\Service
 
     public function resetBenchmarks()
     {
-        $this->memory = array(
+        $this->memory = [
             'start' => 0,
-            'end' => 0 );
-        $this->time = array(
+            'end' => 0 ];
+        $this->time = [
             'start' => 0,
-            'end' => 0 );
+            'end' => 0 ];
     }
 
     public function getMemoryUsage()
@@ -107,15 +107,15 @@ class Util extends \Base\Service
     {
         $profiler = $this->getService( 'profiler' );
         $profiles = $profiler->getProfiles();
-        $return = array();
+        $return = [];
 
         foreach ( (array) $profiles as $profile )
         {
-            $return[] = array(
+            $return[] = [
                 'statement' => $profile->getSQLStatement(),
                 'start_time' => $profile->getInitialTime(),
                 'end_time' => $profile->getFinalTime(),
-                'elapsed_time' => $profile->getTotalElapsedSeconds() );
+                'elapsed_time' => $profile->getTotalElapsedSeconds() ];
         }
 
         return $return;
@@ -123,7 +123,7 @@ class Util extends \Base\Service
 
     public function getDebugInfo()
     {
-        return array(
+        return [
             'session_id' => $this->getService( 'session' )->getId(),
             'memory' => $this->getMemoryUsage(),
             'memory_human' => human_bytes( $this->getMemoryUsage() ),
@@ -131,6 +131,6 @@ class Util extends \Base\Service
             'peak_memory_human' => human_bytes( $this->getPeakMemoryUsage() ),
             'time' => $this->getExecutionTime(),
             'time_human' => round( $this->getExecutionTime() * 1000, 2 ) .' ms',
-            'query_profiles' => $this->getQueryProfiles() );
+            'query_profiles' => $this->getQueryProfiles() ];
     }
 }

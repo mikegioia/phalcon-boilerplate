@@ -121,7 +121,7 @@ function valid( $mixed, $expected_type = INT )
  */
 function human_bytes( $bytes, $precision = 2 )
 {
-    $unit = array( 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB' );
+    $unit = [ 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB' ];
 
     if ( ! $bytes )
     {

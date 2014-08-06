@@ -3,11 +3,9 @@
 $router = new Phalcon\Mvc\Router( FALSE );
 
 // automatically remove trailing slashes
-//
 $router->removeExtraSlashes( TRUE );
 
 // base application
-//
 $router->add(
     '/:controller/:action/:params',
     array(
@@ -24,7 +22,6 @@ $router->add(
     ));
 
 // load the namespaces, array takes the form $segment => $namespace
-//
 foreach ( $config->app->modules as $segment => $namespace )
 {
     $router->add(

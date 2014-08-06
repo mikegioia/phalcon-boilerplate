@@ -36,27 +36,24 @@ class Validate extends \Base\Service
             {
                 case 'exists':
                     $message = sprintf( "%s is required", ucfirst( $key ) );
-                    $testObj = new PresenceOf(
-                        array(
-                            'message' => get( $params, 'message', $message )
-                        ));
+                    $testObj = new PresenceOf([
+                        'message' => get( $params, 'message', $message )
+                    ]);
                     break;
 
                 case 'email':
                     $message = "Please specify a valid email address";
-                    $testObj = new Email(
-                        array(
-                            'message' => get( $params, 'message', $message )
-                        ));
+                    $testObj = new Email([
+                        'message' => get( $params, 'message', $message )
+                    ]);
                     break;
 
                 case 'length':
                     $message = "Please specify a valid email address";
-                    $testObj = new StringLength(
-                        array(
-                            'message' => get( $params, 'message', $message ),
-                            'min' => get( $params, 'min', 0 )
-                        ));
+                    $testObj = new StringLength([
+                        'message' => get( $params, 'message', $message ),
+                        'min' => get( $params, 'min', 0 )
+                    ]);
                     break;
             }
 

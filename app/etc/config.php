@@ -1,70 +1,70 @@
 <?php
 
-return array(
-    'app' => array(
+return [
+    'app' => [
         'environment' => 'local',
         'errorReporting' => TRUE,
         // can be 'api' or 'view'
         'responseMode' => 'api',
         // router namespace modules
-        'modules' => array(
-            'api' => 'Api' )),
+        'modules' => [
+            'api' => 'Api' ]],
 
-    'paths' => array(
+    'paths' => [
         'baseUri' => 'http://phalcon.dev/',
         'assetUri' => 'http://phalcon.dev/',
-        'hostname' => 'phalcon.dev' ),
+        'hostname' => 'phalcon.dev' ],
 
-    'session' => array(
+    'session' => [
         // can be 'redis' or 'files'
         'adapter' => 'files',
         'name' => 'phalcon',
         'lifetime' => 1440,
-        'cookieLifetime' => 86400 ),
+        'cookieLifetime' => 86400 ],
 
-    'cache' => array(
+    'cache' => [
         // can be 'redis' or 'files'
         'adapter' => 'files',
         'prefix' => '',
         // only used for files adapter
         // should have web user group write
-        'dir' => '/tmp/' ),
+        'dir' => '/tmp/' ],
 
-    'cookies' => array(
+    'cookies' => [
         // 14 days
         'expire' => 60*60*24*14,
         'path' => '/',
         'secure' => TRUE,
-        'httpOnly' => TRUE ),
+        'httpOnly' => TRUE ],
 
-    'redis' => array(
-        'cache' => array(
+    'redis' => [
+        'cache' => [
             'host' => 'localhost',
-            'port' => 6379 ),
-        'session' => array(
+            'port' => 6379 ],
+        'session' => [
             'host' => 'localhost',
             'port' => 6379,
-            'prefix' => 'session:' )),
+            'prefix' => 'session:' ]],
 
-    'database' => array(
+    'database' => [
         'adapter' => 'Mysql',
         'host' => 'localhost',
         'username' => 'root',
         'password' => '',
         'dbname' => 'phalcon',
-        'persistent' => TRUE ),
+        'persistent' => TRUE ],
 
-    'mongodb' => array(
+    'mongodb' => [
         'host' => 'localhost',
         'port' => 27017,
         'username' => '',
         'password' => '',
-        'dbname' => 'phalcon' ),
+        'dbname' => 'phalcon' ],
 
-    'profiling' => array(
+    'profiling' => [
         'system' => TRUE,
-        'query' => TRUE ),
+        'query' => TRUE ],
 
-    'settings' => array(
+    'settings' => [
         'cookieToken' => 'cookie_token'
-    ));
+    ]];

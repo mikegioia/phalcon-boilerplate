@@ -7,10 +7,9 @@ use Phalcon\Mvc\View;
 class Controller extends \Phalcon\Mvc\Controller
 {
     // response variables
-    //
     public $status = SUCCESS;
     public $code = 200;
-    public $messages = array();
+    public $messages = [];
     public $data = NULL;
 
     protected $checkLoggedIn = TRUE;
@@ -52,7 +51,6 @@ class Controller extends \Phalcon\Mvc\Controller
         $util = $this->getDI()->getShared( 'util' );
 
         // pull stored messages and stop the benchmarks
-        //
         $this->messages = array_merge(
             $this->messages,
             $util->getMessages() );
@@ -62,17 +60,15 @@ class Controller extends \Phalcon\Mvc\Controller
         // if we're in API mode, send a JSON response. otherwise
         // save the messages to the flashdata and optionally redirect
         // if the redirect is set.
-        //
         if ( $this->responseMode === 'api' )
         {
-            $response = array(
+            $response = [
                 'status' => $this->status,
                 'code' => $this->code,
                 'messages' => $this->messages,
-                'data' => $this->data );
+                'data' => $this->data ];
 
             // if profiling is enabled, pull the benchmark data
-            //
             if ( $this->config->profiling->system )
             {
                 $response[ 'debug' ] = $util->getDebugInfo();
@@ -117,13 +113,12 @@ class Controller extends \Phalcon\Mvc\Controller
         {
             if ( $this->responseMode === 'api' )
             {
-                return $this->dispatcher->forward(
-                    array(
-                        'namespace' => 'Controllers',
-                        'controller' => 'error',
-                        'action' => 'show401',
-                        'params' => array( $this->responseMode )
-                    ));
+                return $this->dispatcher->forward([
+                    'namespace' => 'Controllers',
+                    'controller' => 'error',
+                    'action' => 'show401',
+                    'params' => [ $this->responseMode ]
+                ]);
             }
             else
             {
@@ -161,7 +156,7 @@ class Controller extends \Phalcon\Mvc\Controller
 
     public function addMessage( $message, $type = SUCCESS )
     {
-        $this->messages[] = array( $type => $message );
+        $this->messages[] = [ $type => $message ];
     }
 
     public function quit( $message, $type = SUCCESS, $redirect = NULL, $code = NULL )

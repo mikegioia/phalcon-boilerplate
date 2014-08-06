@@ -6,7 +6,7 @@ use \Phalcon\DI as DI;
 
 class Action extends \Phalcon\Mvc\User\Component
 {
-    public function getService( $service )
+    function getService( $service )
     {
         return $this->getDI()->get( $service );
     }
