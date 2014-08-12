@@ -14,16 +14,16 @@ include APP_PATH . '/library/Bootstrap/App.php';
 try
 {
     // bootstrap the application
-    $bootstrap = new \Lib\Bootstrap\App(
-        array(
-            'router', 'url', 'cookies', 'session',
-            'profiler', 'db', 'mongo', 'collectionManager',
-            'dataCache', 'view', 'dispatcher', 'util', 'auth',
-            'validate', 'cache'
-        ));
+    $bootstrap = new \Lib\Bootstrap\App([
+        'router', 'url', 'cookies', 'session',
+        'profiler', 'db', 'mongo', 'collectionManager',
+        'dataCache', 'view', 'dispatcher', 'util', 'auth',
+        'validate', 'cache'
+    ]);
     $bootstrap->run();
 }
 catch ( Exception $e )
 {
-    echo get_stack_trace( $e );
+    echo 'Exception: ', $e->getMessage(), '<br />';
+    echo nl2br( htmlentities( $e->getTraceAsString() ) );
 }

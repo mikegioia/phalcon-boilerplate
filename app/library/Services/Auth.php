@@ -38,7 +38,6 @@ class Auth extends \Base\Service
             }
 
             // update the auth from the session
-            //
             $this->userId = $this->getDI()
                 ->getShared( 'session' )
                 ->get( 'user_id' );

@@ -15,16 +15,14 @@ class Auth extends \Base\Action
     {
         $validate = $this->getService( 'validate' );
         $validate->add(
-            'email',
-            array(
-                'exists' => array(),
-                'email' => array()
-            ));
+            'email', [
+                'exists' => [],
+                'email' => []
+            ]);
         $validate->add(
-            'password',
-            array(
-                'exists' => array()
-            ));
+            'password', [
+                'exists' => []
+            ]);
 
         if ( ! $validate->run( $params ) )
         {
@@ -32,7 +30,6 @@ class Auth extends \Base\Action
         }
 
         // authorize the email/password combo
-        //
         $user = $this->authorizeLogin(
             $params[ 'email' ],
             $params[ 'password' ] );
@@ -43,12 +40,10 @@ class Auth extends \Base\Action
         }
 
         // save the session data
-        //
         $this->getService( 'session' )->set( 'user_id', $user->id );
         $this->getService( 'auth' )->load( $user->id );
 
         // write out the cookie token
-        //
         return self::createToken( $user->id );
     }
 
@@ -62,7 +57,6 @@ class Auth extends \Base\Action
     public function authorizeLogin( $email, $password )
     {
         // check if the email exists
-        //
         $util = $this->getService( 'util' );
         $user = \Db\Sql\Users::findByEmail( $email )->getFirst();
 
@@ -75,7 +69,6 @@ class Auth extends \Base\Action
 
         // hash the plaintext password and compare it against the
         // database password.
-        //
         $security = $this->getService( 'security' );
 
         if ( ! $security->checkHash( $password, $user->password ) )
@@ -109,7 +102,6 @@ class Auth extends \Base\Action
         $cookies = $this->getService( 'cookies' );
 
         // read the cookie, check if the token belongs to a user
-        //
         if ( ! $cookies->has( 'token' ) )
         {
             return FALSE;
@@ -123,7 +115,6 @@ class Auth extends \Base\Action
         }
 
         // try to get the user by token
-        //
         $user = \Db\Sql\Users::getByToken( $token );
 
         if ( ! $user || ! valid( $user->id ) )
@@ -132,7 +123,6 @@ class Auth extends \Base\Action
         }
 
         // save the session data
-        //
         $session = $this->getService( 'session' );
         $session->set( 'user_id', $user->id );
 
@@ -154,7 +144,6 @@ class Auth extends \Base\Action
         $util = $this->getService( 'util' );
 
         // set the cookie
-        //
         $token = $this->generateRandomToken();
         $cookieSet = $cookies->set(
             'token',
@@ -172,15 +161,13 @@ class Auth extends \Base\Action
         }
 
         // save the user setting 'cookie_token'
-        //
         $setting = new \Db\Sql\Settings();
-        $settingSaved = $setting->save(
-            array(
-                'object_id' => $userId,
-                'object_type' => 'user',
-                'key' => $config->settings->cookieToken,
-                'value' => $token
-            ));
+        $settingSaved = $setting->save([
+            'object_id' => $userId,
+            'object_type' => 'user',
+            'key' => $config->settings->cookieToken,
+            'value' => $token
+        ]);
 
         if ( ! $settingSaved )
         {
@@ -210,9 +197,7 @@ class Auth extends \Base\Action
             $userId,
             'user',
             $config->settings->cookieToken,
-            array(
-                'first' => TRUE
-            ));
+            [ 'first' => TRUE ]);
 
         return ( $setting
             && $setting->delete()
@@ -251,7 +236,7 @@ class Auth extends \Base\Action
         $code_alphabet .= "0123456789";
         $alphabet_length = strlen( $code_alphabet );
 
-        for( $i = 0; $i < $length; $i++ )
+        for ( $i = 0; $i < $length; $i++ )
         {
             $token .= $code_alphabet[ $this->cryptoRandSecure( 0, $alphabet_length ) ];
         }
