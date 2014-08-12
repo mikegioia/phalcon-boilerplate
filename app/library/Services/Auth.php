@@ -5,9 +5,9 @@ namespace Lib\Services;
 use Db\Sql\Users;
 
 /**
- * Manages identity authentication and permissions in Phoenix
- *
-* @depends service session
+ * Manages identity authentication and permissions throughout the
+ * Session.
+ * @depends service session
  */
 class Auth extends \Base\Service
 {
@@ -21,7 +21,6 @@ class Auth extends \Base\Service
     public function init()
     {
         // save the userId from the session
-        //
         $this->userId = $this->getDI()
             ->getShared( 'session' )
             ->get( 'user_id' );
@@ -29,7 +28,6 @@ class Auth extends \Base\Service
         // read in the session. if it's not set, try to re-authorize them
         // with a login token. authorizeToken will set the session info
         // if a valid token exists.
-        //
         if ( ! $this->isLoggedIn() )
         {
             $action = new \Actions\Users\Auth();
@@ -48,7 +46,6 @@ class Auth extends \Base\Service
 
         // load user, roles, and settings. if the requested userId is the
         // same as the session, then just use the session user.
-        //
         $this->load( $this->userId );
     }
 
