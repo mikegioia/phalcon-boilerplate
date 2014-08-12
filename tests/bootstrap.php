@@ -6,7 +6,7 @@ error_reporting( E_ALL );
 
 define( 'ROOT_PATH', __DIR__ );
 define( 'APP_PATH', __DIR__ . '/../app' );
-define( 'VENDOR_PATH', __DIR__ . '/..vendor' );
+define( 'VENDOR_PATH', __DIR__ . '/../vendor' );
 set_include_path(
     ROOT_PATH . PATH_SEPARATOR . get_include_path() );
 

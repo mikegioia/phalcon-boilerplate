@@ -50,7 +50,7 @@ return [
         'adapter' => 'Mysql',
         'host' => 'localhost',
         'username' => 'root',
-        'password' => '',
+        'password' => 'root',
         'dbname' => 'phalcon',
         'persistent' => TRUE ],
 
