@@ -5,7 +5,7 @@ return [
         'environment' => 'local',
         'errorReporting' => TRUE,
         // can be 'api' or 'view'
-        'responseMode' => 'api',
+        'responseMode' => 'view',
         // router namespace modules
         'modules' => [
             'api' => 'Api' ]],
