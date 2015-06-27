@@ -1,6 +1,10 @@
 # Phalcon Boilerplate Quickstart Guide
 
 This short document will show you how to get the code working.
+If you need compatibility with version 1.3.5 of Phalcon, please
+use the 1.3.5 branch or the `v1.3.5` tag. The master branch
+is compatible with the 2.0.x versions of Phalcon.
+
 For a more detailed explanation and documentation visit
 [the article series at ParticleBits][1] (@todo).
 
