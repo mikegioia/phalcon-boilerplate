@@ -84,7 +84,7 @@ function valid( $mixed, $expected_type = INT )
     }
     elseif ( $expected_type === DATE )
     {
-        // check if date is of form YYYY-MM-DD HH:MM:SS and that it
+        // Check if date is of form YYYY-MM-DD HH:MM:SS and that it
         // is not 0000-00-00 00:00:00.
         //
         if ( strlen( $mixed ) === 19 
@@ -93,8 +93,7 @@ function valid( $mixed, $expected_type = INT )
             return TRUE;
         }
 
-        // check for MM/DD/YYYY type dates
-        //
+        // Check for MM/DD/YYYY type dates
         $parts = explode( "/", $mixed );
 
         return count( $parts ) === 3
@@ -102,8 +101,7 @@ function valid( $mixed, $expected_type = INT )
     }
     elseif ( $expected_type === OBJECT )
     {
-        // iterate through object and check if there are any properties
-        //
+        // Iterate through object and check if there are any properties
         foreach ( $mixed as $property )
         {
             if ( $property )

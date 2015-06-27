@@ -1,23 +1,23 @@
 <?php
 
-// variable types
+// Variable types
 define( 'INT', 'int' );
 define( 'STRING', 'string' );
 define( 'DATE', 'date' );
 define( 'OBJECT', 'object' );
 
-// responses
+// Responses
 define( 'SUCCESS', 'success' );
 define( 'ERROR', 'error' );
 define( 'INFO', 'info' );
 define( 'DEBUG', 'debug' );
 define( 'WARN', 'warn' );
 
-// permissions and access
+// Permissions and access
 define( 'READ', 'r' );
 define( 'WRITE', 'w' );
 
-// dates
+// Dates
 define( 'DATE_DATABASE', 'Y-m-d H:i:s' );
 define( 'DATE_TABLE', "j M 'y" );
 define( 'DATE_DAY_NAME', 'l, M j' );

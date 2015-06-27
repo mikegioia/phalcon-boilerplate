@@ -1,6 +1,0 @@
-app/etc/config.local.php
-app/etc/secret.ini
-composer.lock
-
-syntax: regexp
-^vendor/

@@ -1,16 +1,17 @@
 #!/bin/bash
 #
-# installation script
-# creates local configuration files and sets up the environment
+# Installation script
+# Creates local configuration files and sets up the environment
+##
 
-# read in the env
+## Read in the env
 usage="Sets up the Phalcon Boilerplate application
 usage:
     $(basename "$0") [-h] <profile>
 options:
     -h  show this help text"
 
-# whether to force config update
+## Whether to force config update
 force=0
 
 while getopts ':hf' option; do
@@ -28,11 +29,11 @@ while getopts ':hf' option; do
 done
 shift $((OPTIND - 1))
 
-# get the paths
+## Get the paths
 rootpath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )";
 apppath="$rootpath/../app";
 
-# copy the config environment file
+## Copy the config environment file
 env=${1:-"local"}
 
 if [ ! -f "${apppath}/etc/env/${env}.php" ] ; then
@@ -47,10 +48,10 @@ else
     echo "'${env}' config file exists, skipping! (try -f to force)"
 fi
 
-# read in the secret file (if there is one). we want to
-# iterate line by line looking for VAR=val lines. Then,
-# we'll find ##VAR## in the local config file and replace
-# it with val.
+## Read in the secret file (if there is one). we want to
+## iterate line by line looking for VAR=val lines. Then,
+## we'll find ##VAR## in the local config file and replace
+## it with val.
 if [[ -f "${apppath}/etc/secret.ini" ]] ; then
     while read -r line || [[ -n $line ]]
     do
