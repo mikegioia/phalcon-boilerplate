@@ -2,7 +2,7 @@
 
 namespace Base;
 
-use \Phalcon\DI as DI;
+use Phalcon\DI as DI;
 
 class Task extends \Phalcon\CLI\Task
 {

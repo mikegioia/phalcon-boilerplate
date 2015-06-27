@@ -2,6 +2,8 @@
 
 namespace Db\Sql;
 
+use Db\Behaviors\Timestamp as Timestampable;
+
 class Settings extends \Base\Model
 {
     public $object_id;
@@ -13,7 +15,7 @@ class Settings extends \Base\Model
     function initialize()
     {
         $this->setSource( 'settings' );
-        $this->addBehavior( 'timestamp' );
+        $this->addBehavior( new Timestampable() );
     }
 
     /**

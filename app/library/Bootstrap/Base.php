@@ -77,7 +77,7 @@ abstract class Base
 
         // instantiate them into the phalcon config
         $config = new Config( $defaultConfig );
-        $config->merge( $localConfig );
+        $config->merge( new Config($localConfig) );
 
         $this->di[ 'config' ] = $config;
     }
