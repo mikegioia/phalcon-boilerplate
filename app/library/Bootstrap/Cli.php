@@ -17,8 +17,14 @@ class Cli extends \Lib\Bootstrap\Base
     {
         parent::run( $args );
 
-        // call the task action specified
+        // Call the task action specified
         $class = '\Tasks\\'. ucfirst( $args[ 'task' ] ) .'Task';
+
+        if ( ! class_exists( $class ) )
+        {
+            throw new \Exception( "Task '{$args[ 'task' ]}' doesn't exist!" );
+        }
+
         $action = strtolower( $args[ 'action' ] ) .'Action';
         $task = new $class();
 
@@ -43,7 +49,7 @@ class Cli extends \Lib\Bootstrap\Base
         ]);
         $loader->register();
 
-        // autoload vendor dependencies
+        // Autoload vendor dependencies
         require_once VENDOR_PATH .'/autoload.php';
 
         $this->di[ 'loader' ] = $loader;

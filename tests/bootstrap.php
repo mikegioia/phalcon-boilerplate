@@ -10,17 +10,14 @@ define( 'VENDOR_PATH', __DIR__ . '/../vendor' );
 set_include_path(
     ROOT_PATH . PATH_SEPARATOR . get_include_path() );
 
-// vendor autoload
-//
+// Vendor autoload
 include ROOT_PATH . "/../vendor/autoload.php";
 
-// app constants and functions (global)
-//
+// App constants and functions (global)
 include APP_PATH . '/etc/constants.php';
 include APP_PATH . '/etc/helpers.php';
 
-// bootstrap and unit test classes
-//
+// Bootstrap and unit test classes
 include APP_PATH . '/library/Bootstrap/Base.php';
 include APP_PATH . '/library/Bootstrap/Unit.php';
 include ROOT_PATH . "/UnitTestCase.php";

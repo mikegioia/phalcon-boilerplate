@@ -2,18 +2,40 @@
 
 namespace Db\Behaviors;
 
-use \Phalcon\Mvc\Model\MetaData,
-    \Phalcon\Db\Column;
+use Phalcon\Db\Column,
+    Phalcon\Mvc\Model\Behavior,
+    Phalcon\Mvc\Model\MetaData,
+    Phalcon\Mvc\ModelInterface,
+    Phalcon\Mvc\Model\BehaviorInterface;
 
-class Timestamp
+class Timestamp extends Behavior implements BehaviorInterface
 {
-    public function __construct()
+    public function notify( $eventType, ModelInterface $record )
     {
+        switch ( $eventType )
+        {
+            case 'beforeSave':
+                $timestamp = new \DateTime();
+                $datetime = $timestamp->format( DATE_DATABASE );
+
+                if ( property_exists( $record, 'created_at' )
+                    && empty( $record->created_at ) )
+                {
+                    $record->created_at = $datetime;
+                }
+
+                if ( property_exists( $record, 'modified_at' ) )
+                {
+                    $record->modified_at = $datetime;
+                }
+
+                break;
+
+            default:
+        }
     }
 
-    /**
-     * beforeSave hook called prior to any Save (insert/update)
-    */
+    /*
     public function beforeSave( $record )
     {
         $timestamp = new \DateTime();
@@ -30,4 +52,5 @@ class Timestamp
             $record->modified_at = $datetime;
         }
     }
+    */
 }

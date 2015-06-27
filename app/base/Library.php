@@ -2,7 +2,7 @@
 
 namespace Base;
 
-use \Phalcon\DI as DI;
+use Phalcon\DI as DI;
 
 class Library extends \Phalcon\Mvc\User\Component
 {
