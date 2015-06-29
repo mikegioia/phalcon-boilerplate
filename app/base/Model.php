@@ -2,8 +2,7 @@
 
 namespace Base;
 
-use Phalcon\DI as DI,
-    Phalcon\Mvc\Model\Behavior as Behavior;
+use Phalcon\DI as DI;
 
 class Model extends \Phalcon\Mvc\Model
 {
