@@ -9,7 +9,7 @@ class Auth extends \Base\Action
      * in and sets the session/cookie.
      *
      * @param array $params
-     * @return bool
+     * @return bool | string
      */
     public function login( $params )
     {
