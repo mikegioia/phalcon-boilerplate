@@ -38,7 +38,7 @@ class Session
 
     public function close()
     {
-        return FALSe;
+        return FALSE;
     }
 
     public function read( $sessionId = NULL )
